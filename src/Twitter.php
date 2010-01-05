@@ -55,6 +55,22 @@ class Twitter
 		'statuses/destroy'	=> array('required'=>array('id'),'#id'=>'id','method'=>'post'), 
 		'statuses/retweet'	=> array('url'=>'http://api.twitter.com/1','required'=>array('id'),'#id'=>'id','method'=>'post'),
 		'statuses/retweets'	=> array('url'=>'http://api.twitter.com/1','required'=>array('id'),'#id'=>'id'),
+	
+		// User Methods
+		'users/show'		=> array('#id'=>'id','auth'=>false),
+		'users/search'		=> array('url'=>'http://api.twitter.com/1','required'=>array('q')),
+		'statuses/friends'	=> array('#id'=>'id','auth'=>false),
+		'statuses/followers'=> array('#id'=>'id','auth'=>false),
+	
+		// Friendship Methods
+		'friendships/create'	=> array('#id'=>'id','method'=>'post'),
+		'friendships/destroy'	=> array('#id'=>'id','method'=>'post'),
+		'friendships/exists'	=> array('required'=>array('user_a','user_b')),
+		'friendships/show'		=> array('#id'=>'id'),
+	
+		// Social Graph Methods
+		'friends/ids'	=> array('#id'=>'id','auth'=>false),
+		'followers/ids'	=> array('#id'=>'id','auth'=>false),
 	);
 	
 	/**
