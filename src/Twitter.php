@@ -15,6 +15,7 @@ class Twitter
 	const VERSION = '0.1';
 	const URL = 'http://twitter.com';
 	const API_URL = 'http://api.twitter.com';
+	const SEARCH_URL = 'http://search.twitter.com';
 	
 	static protected $_path = null;
 	protected $_userAgent = null;
@@ -30,6 +31,14 @@ class Twitter
 	);
 	// http://apiwiki.twitter.com/Twitter-API-Documentation
 	protected $_apis = array(
+	
+		// Search Methods
+		'search'			=> array('url'=>'http://search.twitter.com','required'=>array('q'),'auth'=>false),
+		'trends'			=> array('url'=>'http://search.twitter.com','auth'=>false),
+		'trends/current'	=> array('url'=>'http://search.twitter.com','auth'=>false),
+		'trends/daily'		=> array('url'=>'http://search.twitter.com','auth'=>false),
+		'trends/weekly'		=> array('url'=>'http://search.twitter.com','auth'=>false),
+	
 		// Timeline Methods
 		'statuses/public_timeline'	=> array('auth'=>false),
 		'statuses/friends_timeline'	=> array(),

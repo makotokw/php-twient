@@ -20,6 +20,10 @@ class Twitter_Request_Curl extends Twitter_Request
 			if (isset($signedData['headers'])) {
 				$headers = array_merge($headers, $signedData['headers']);
 			}
+		} else {
+			if (count($params)) {
+				$url .= ((strpos($url,'?')===false) ? '?' : '&').http_build_query($params);
+			}
 		}
 		return $this->_request($url, $method, $headers);
 	}
