@@ -53,12 +53,13 @@ class Twitter_Request
 	
 	public function get($url, array $params = array(), $auth = false)
 	{
+		$method = 'GET';
 		$headers = array(
 			'User-Agent: '.$this->getUserAgent(),
 		);
 		
 		if ($auth) {
-			$signedData = $auth->sign(array('url'=>$url, 'method'=>'GET', 'params'=>$params));
+			$signedData = $auth->sign(array('url'=>$url, 'method'=>$method, 'params'=>$params));
 			$url = $signedData['url'];
 			$params = $signedData['params'];
 			if (isset($signedData['headers'])) {
@@ -71,7 +72,7 @@ class Twitter_Request
 		}
 		$opt = array(
 			'http' => array(
-				'method'    => 'GET',
+				'method'    => $method,
 				'header'    => implode("\r\n", $headers),
 			)
 		);

@@ -28,6 +28,7 @@ class Twitter
 		'#id'=>null,
 		'method'=>'get',
 		'auth'=>true,
+		'streaming'=>false,
 	);
 	// http://apiwiki.twitter.com/Twitter-API-Documentation
 	protected $_apis = array(
@@ -71,6 +72,11 @@ class Twitter
 		// Social Graph Methods
 		'friends/ids'	=> array('#id'=>'id','auth'=>false),
 		'followers/ids'	=> array('#id'=>'id','auth'=>false),
+	
+		// Streaming API Methods
+		'spritzer' => array('url'=>'http://stream.twitter.com/1','streaming'=>true),
+		'statuses/filter' => array('url'=>'http://stream.twitter.com/1','method'=>'post','streaming'=>true),
+		'statuses/sample' => array('url'=>'http://stream.twitter.com/1','streaming'=>true),
 	);
 	
 	/**
@@ -191,7 +197,7 @@ class Twitter
 	 * @param array $params			key-value parameter for method
 	 * @return mixed
 	 */
-	public function call($methodName, array $params = array())
+	public function call($methodName, array $params = array(), $callback = null)
 	{
 		if (!array_key_exists($methodName, $this->_apis)) {
 			throw new Twitter_Exception('This method is not supported: '.$methodName);
@@ -213,6 +219,19 @@ class Twitter
 			$url = sprintf('%s/%s/%s.%s',$config['url'], $methodName, $id, $format);
 		} else {
 			$url = sprintf('%s/%s.%s',$config['url'], $methodName, $format);
+		}
+		
+		// streaming API
+		if ($config['streaming']) {
+			if (get_class($this->getAuth()) != 'Twitter_Auth_Basic') {
+				throw new Twitter_Exception('Streaming API requires BasicAuth!');
+			}
+			if (!$callback) throw new Twitter_Exception('callback is required');
+			if (!is_callable($callback)) throw new Twitter_Exception('callback is not callable');
+			$request = new Twitter_Request_Streaming();
+			$request->setUserAgent($this->getUserAgent());
+			$method = $config['method'].'JSON';
+			return $request->$method($url, $params, $this->getAuth(), $callback);
 		}
 		
 		$request = $this->createRequest();
@@ -250,5 +269,6 @@ if (function_exists('spl_autoload_register')) {
 	require_once dirname(__FILE__).'/Twitter/Auth/OAuth.php';
 	require_once dirname(__FILE__).'/Twitter/Request.php';
 	require_once dirname(__FILE__).'/Twitter/Request/Curl.php';
+	require_once dirname(__FILE__).'/Twitter/Request/Streaming.php';
 	require_once dirname(__FILE__).'/Twitter/TinyUrl.php';
 }
