@@ -9,25 +9,25 @@ try {
 	$twitter = new Twitter();
 	$twitter->basicAuth($argv[1], $argv[2]);
 	$count = 0;
-	$t->ok($twitter->call('statuses/filter',array('track'=>'Sushi,Japan'),'_callback'),'statuses/filter');
+	$t->ok($twitter->streaming('statuses/filter',array('track'=>'Sushi,Japan'),'_callback'),'statuses/filter');
 	$count = 0;
-	$t->ok($twitter->call('statuses/sample',array(),'_callback_ja'),'statuses/sample');
+	$t->ok($twitter->streaming('statuses/sample',array(),'_callback_ja'),'statuses/sample');
 } catch (Twitter_Exception $e) {
 	$t->fail($e);
 } catch (Exception $e) {
 	$t->fail($e);
 }
 
-function _callback($twitter) {
+function _callback($status) {
 	global $count;
-	echo $twitter['user']['name'].':'.$twitter['text'] . PHP_EOL;
+	echo $status['user']['name'].':'.$status['text'] . PHP_EOL;
 	return ($count++<5);
 }
 
-function _callback_ja($twitter) {
+function _callback_ja($status) {
 	global $count;
-	if(preg_match('/[ァ-ヶーぁ-ん]/u',$twitter['text'])) {
-		echo $twitter['user']['name'].':'.$twitter['text'] . PHP_EOL;
+	if(preg_match('/[ァ-ヶーぁ-ん]/u',$status['text'])) {
+		echo $status['user']['name'].':'.$status['text'] . PHP_EOL;
 		$count++;
 	}
 	return ($count<5);

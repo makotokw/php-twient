@@ -12,6 +12,7 @@ class Twitter_Request
 	protected $_headers = array();
 	protected $_userAgent;
 	protected $_timeout = 30;
+	protected $_assoc = true;
 	
 	/**
 	 * Gets the user agent for the HTTP Request to twitter
@@ -29,6 +30,11 @@ class Twitter_Request
 	public function setUserAgent($userAgent)
 	{
 		$this->_userAgent = (string)$userAgent;
+	}
+	
+	public function useAssociativeArray($assoc = true)
+	{
+		$this->_assoc = (bool)$assoc;
 	}
 	
 	public function getTimeout()
@@ -118,12 +124,12 @@ class Twitter_Request
 	
 	public function getJSON($url, array $params = array(), $auth = false)
 	{
-		return json_decode($this->get($url, $params, $auth));
+		return json_decode($this->get($url, $params, $auth), $this->_assoc);
 	}
 
 	public function postJSON($url, array $params = array(), $auth = false)
 	{
-		return json_decode($this->post($url, $params, $auth));
+		return json_decode($this->post($url, $params, $auth), $this->_assoc);
 	}
 }
 

@@ -14,7 +14,7 @@ class Twitter_Request_Streaming extends Twitter_Request
 		$count = 0;
 		while ($data = fgets($stream)) {
 			$count++;
-			$status = json_decode($data, true);
+			$status = json_decode($data, $this->_assoc);
 			if (!call_user_func($callback, $status)) {
 				break;
 			}

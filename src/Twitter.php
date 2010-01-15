@@ -5,14 +5,14 @@
  * PHP versions 5
  *
  * @author     makoto_kw <makoto.kw@gmail.com>
- * @version    0.1
+ * @version    0.2
  * @license    New BSD License, http://www.opensource.org/licenses/bsd-license.php
  * @link       http://github.com/makotokw/php-twient
  */
 class Twitter
 {
 	const NAME = 'php-twient';
-	const VERSION = '0.1';
+	const VERSION = '0.2';
 	const URL = 'http://twitter.com';
 	const API_URL = 'http://api.twitter.com';
 	const SEARCH_URL = 'http://search.twitter.com';
@@ -22,6 +22,7 @@ class Twitter
 	protected $_request = null;
 	protected $_auth = null;
 	protected $_requestClass = 'Twitter_Request';
+	protected $_assoc = true;
 	protected $_defaultConfigration = array(
 		'url'=>'http://twitter.com',
 		'required'=>array(),
@@ -72,10 +73,13 @@ class Twitter
 		// Social Graph Methods
 		'friends/ids'	=> array('#id'=>'id','auth'=>false),
 		'followers/ids'	=> array('#id'=>'id','auth'=>false),
+	);
 	
-		// Streaming API Methods
+	protected $_streamingApis = array(
 		'spritzer' => array('url'=>'http://stream.twitter.com/1','streaming'=>true),
 		'statuses/filter' => array('url'=>'http://stream.twitter.com/1','method'=>'post','streaming'=>true),
+		'statuses/firehose' => array('url'=>'http://stream.twitter.com/1','streaming'=>true),
+		'statuses/retweet' => array('url'=>'http://stream.twitter.com/1','streaming'=>true),
 		'statuses/sample' => array('url'=>'http://stream.twitter.com/1','streaming'=>true),
 	);
 	
@@ -197,7 +201,7 @@ class Twitter
 	 * @param array $params			key-value parameter for method
 	 * @return mixed
 	 */
-	public function call($methodName, array $params = array(), $callback = null)
+	public function call($methodName, array $params = array())
 	{
 		if (!array_key_exists($methodName, $this->_apis)) {
 			throw new Twitter_Exception('This method is not supported: '.$methodName);
@@ -221,23 +225,54 @@ class Twitter
 			$url = sprintf('%s/%s.%s',$config['url'], $methodName, $format);
 		}
 		
-		// streaming API
-		if ($config['streaming']) {
-			if (get_class($this->getAuth()) != 'Twitter_Auth_Basic') {
-				throw new Twitter_Exception('Streaming API requires BasicAuth!');
-			}
-			if (!$callback) throw new Twitter_Exception('callback is required');
-			if (!is_callable($callback)) throw new Twitter_Exception('callback is not callable');
-			$request = new Twitter_Request_Streaming();
-			$request->setUserAgent($this->getUserAgent());
-			$method = $config['method'].'JSON';
-			return $request->$method($url, $params, $this->getAuth(), $callback);
-		}
-		
 		$request = $this->createRequest();
+		$request->useAssociativeArray($this->_assoc);
 		$request->setUserAgent($this->getUserAgent());
 		$method = $config['method'].'JSON';
 		return $request->$method($url, $params, ($config['auth']) ? $this->getAuth() : null);
+	}
+	
+	/**
+	 * Calls the Streaming API Method
+	 * @param string $methodName	method name (ie. statuses/sample)
+	 * @param array $params			key-value parameter for method
+	 * @param mixed $callback		callback function (ie. "function_name" or array(class, "method_name"))
+	 * @return mixed
+	 */
+	public function streaming($methodName, array $params = array(), $callback = null)
+	{
+		if (!array_key_exists($methodName, $this->_streamingApis)) {
+			throw new Twitter_Exception('This method is not supported: '.$methodName);
+		}
+		$config = array_merge($this->_defaultConfigration, $this->_streamingApis[$methodName]);
+		
+		foreach ($config['required'] as $key) {
+			if (!array_key_exists($key, $params)) {
+				throw new Twitter_Exception($key.' is required');
+			}
+		}
+		
+		// make url {method}.{format} or {method}/{id}.{format}
+		$format = 'json';
+		$key = $config['#id'];
+		$id = ($key!=null && array_key_exists($key,$params)) ? $params[$key] : null;
+		if ($id!=null) {
+			unset($params[$key]);
+			$url = sprintf('%s/%s/%s.%s',$config['url'], $methodName, $id, $format);
+		} else {
+			$url = sprintf('%s/%s.%s',$config['url'], $methodName, $format);
+		}
+		
+		if (get_class($this->getAuth()) != 'Twitter_Auth_Basic') {
+			throw new Twitter_Exception('Streaming API requires BasicAuth!');
+		}
+		if (!$callback) throw new Twitter_Exception('callback is required');
+		if (!is_callable($callback)) throw new Twitter_Exception('callback is not callabled');
+		$request = new Twitter_Request_Streaming();
+		$request->useAssociativeArray($this->_assoc);
+		$request->setUserAgent($this->getUserAgent());
+		$method = $config['method'].'JSON';
+		return $request->$method($url, $params, $this->getAuth(), $callback);
 	}
 	
 	/**
@@ -256,6 +291,16 @@ class Twitter
 	public function setUserAgent($userAgent)
 	{
 		$this->_userAgent = (string)$userAgent;
+	}
+	
+	/**
+	 * returned objects or associative arrays
+	 * @param bool $assoc When TRUE, call method returned objects will be converted into associative arrays.
+	 * @return unknown_type
+	 */
+	public function useAssociativeArray($assoc = true)
+	{
+		$this->_assoc = (bool)$assoc;
 	}
 }
 
