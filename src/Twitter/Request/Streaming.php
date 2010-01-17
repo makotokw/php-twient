@@ -22,7 +22,7 @@ class Twitter_Request_Streaming extends Twitter_Request
 		return $count;
 	}
 	
-	public function getJSON($url, array $params = array(), $auth, $callback)
+	public function getJSON($url, array $params = array(), $auth = false, $callback = null)
 	{
 		$method = 'GET';
 		$headers = array(
@@ -45,7 +45,7 @@ class Twitter_Request_Streaming extends Twitter_Request
 		
 	}
 	
-	public function postJSON($url, array $params = array(), $auth, $callback)
+	public function postJSON($url, array $params = array(), $auth = false, $callback = null)
 	{
 		$method = 'POST';
 		$headers = array(

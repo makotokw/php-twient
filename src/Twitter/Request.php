@@ -122,12 +122,12 @@ class Twitter_Request
 		return $contents;
 	}
 	
-	public function getJSON($url, array $params = array(), $auth = false)
+	public function getJSON($url, array $params = array(), $auth = false, $callback = null)
 	{
 		return json_decode($this->get($url, $params, $auth), $this->_assoc);
 	}
 
-	public function postJSON($url, array $params = array(), $auth = false)
+	public function postJSON($url, array $params = array(), $auth = false, $callback = null)
 	{
 		return json_decode($this->post($url, $params, $auth), $this->_assoc);
 	}
