@@ -15,7 +15,7 @@ class Twitter
 	const VERSION = '0.3';
 	const URL = 'http://twitter.com';
 	const API_URL = 'http://api.twitter.com/1';
-	const SEARCH_URL = 'http://search.twitter.com/1';
+	const SEARCH_URL = 'http://search.twitter.com';
 	const STREAM_URL = 'http://stream.twitter.com/1';
 	
 	public $apis;
