@@ -12,10 +12,14 @@
 class Twitter
 {
 	const NAME = 'php-twient';
-	const VERSION = '0.2';
+	const VERSION = '0.3';
 	const URL = 'http://twitter.com';
-	const API_URL = 'http://api.twitter.com';
-	const SEARCH_URL = 'http://search.twitter.com';
+	const API_URL = 'http://api.twitter.com/1';
+	const SEARCH_URL = 'http://search.twitter.com/1';
+	const STREAM_URL = 'http://stream.twitter.com/1';
+	
+	public $apis;
+	public $streamingApis;
 	
 	static protected $_path = null;
 	protected $_userAgent = null;
@@ -23,65 +27,7 @@ class Twitter
 	protected $_auth = null;
 	protected $_requestClass = 'Twitter_Request';
 	protected $_assoc = true;
-	protected $_defaultConfigration = array(
-		'url'=>'http://twitter.com',
-		'required'=>array(),
-		'#id'=>null,
-		'method'=>'get',
-		'auth'=>true,
-		'streaming'=>false,
-	);
-	// http://apiwiki.twitter.com/Twitter-API-Documentation
-	protected $_apis = array(
-	
-		// Search Methods
-		'search'			=> array('url'=>'http://search.twitter.com','required'=>array('q'),'auth'=>false),
-		'trends'			=> array('url'=>'http://search.twitter.com','auth'=>false),
-		'trends/current'	=> array('url'=>'http://search.twitter.com','auth'=>false),
-		'trends/daily'		=> array('url'=>'http://search.twitter.com','auth'=>false),
-		'trends/weekly'		=> array('url'=>'http://search.twitter.com','auth'=>false),
-	
-		// Timeline Methods
-		'statuses/public_timeline'	=> array('auth'=>false),
-		'statuses/friends_timeline'	=> array(),
-		'statuses/home_timeline'	=> array('url'=>'http://api.twitter.com/1'),
-		'statuses/user_timeline'	=> array('#id'=>'id'),
-		'statuses/mentions'			=> array(),
-		'statuses/retweeted_by_me'	=> array('url'=>'http://api.twitter.com/1'),
-		'statuses/retweeted_to_me'	=> array('url'=>'http://api.twitter.com/1'),
-		'statuses/retweets_of_me'	=> array('url'=>'http://api.twitter.com/1'),
-		
-		// Status Methods
-		'statuses/show'		=> array('required'=>array('id'),'#id'=>'id','auth'=>false),
-		'statuses/update'	=> array('required'=>array('status'),'method'=>'post'),
-		'statuses/destroy'	=> array('required'=>array('id'),'#id'=>'id','method'=>'post'), 
-		'statuses/retweet'	=> array('url'=>'http://api.twitter.com/1','required'=>array('id'),'#id'=>'id','method'=>'post'),
-		'statuses/retweets'	=> array('url'=>'http://api.twitter.com/1','required'=>array('id'),'#id'=>'id'),
-	
-		// User Methods
-		'users/show'		=> array('#id'=>'id','auth'=>false),
-		'users/search'		=> array('url'=>'http://api.twitter.com/1','required'=>array('q')),
-		'statuses/friends'	=> array('#id'=>'id','auth'=>false),
-		'statuses/followers'=> array('#id'=>'id','auth'=>false),
-	
-		// Friendship Methods
-		'friendships/create'	=> array('#id'=>'id','method'=>'post'),
-		'friendships/destroy'	=> array('#id'=>'id','method'=>'post'),
-		'friendships/exists'	=> array('required'=>array('user_a','user_b')),
-		'friendships/show'		=> array('#id'=>'id'),
-	
-		// Social Graph Methods
-		'friends/ids'	=> array('#id'=>'id','auth'=>false),
-		'followers/ids'	=> array('#id'=>'id','auth'=>false),
-	);
-	
-	protected $_streamingApis = array(
-		'spritzer' => array('url'=>'http://stream.twitter.com/1','streaming'=>true),
-		'statuses/filter' => array('url'=>'http://stream.twitter.com/1','method'=>'post','streaming'=>true),
-		'statuses/firehose' => array('url'=>'http://stream.twitter.com/1','streaming'=>true),
-		'statuses/retweet' => array('url'=>'http://stream.twitter.com/1','streaming'=>true),
-		'statuses/sample' => array('url'=>'http://stream.twitter.com/1','streaming'=>true),
-	);
+	protected $_defaultConfigration;
 	
 	/**
 	 * Construct
@@ -89,6 +35,89 @@ class Twitter
 	public function __construct()
 	{
 		$this->_requestClass = (function_exists('curl_init')) ? 'Twitter_Request_Curl' : 'Twitter_Request';
+		$this->_defaultConfigration = array(
+			'url'=>self::API_URL,
+			'required'=>array(),
+			'#id'=>null,
+			'http'=>'get',
+			'auth'=>true,
+			'streaming'=>false,
+		);
+		// http://apiwiki.twitter.com/Twitter-API-Documentation
+		$this->apis = array(
+			// Search Methods
+			'search'					=> array('url'=>self::SEARCH_URL,'required'=>array('q'),'auth'=>false),
+		
+			// Timeline Methods
+			'statuses/public_timeline'	=> array('auth'=>false),
+			'statuses/friends_timeline'	=> array(),
+			'statuses/home_timeline'	=> array(),
+			'statuses/user_timeline'	=> array('#id'=>'id'),
+			'statuses/mentions'			=> array(),
+			'statuses/retweeted_by_me'	=> array(),
+			'statuses/retweeted_to_me'	=> array(),
+			'statuses/retweets_of_me'	=> array(),
+			
+			// Status Methods
+			'statuses/show'					=> array('required'=>array('id'),'#id'=>'id','auth'=>false),
+			'statuses/update'				=> array('required'=>array('status'),'http'=>'post'),
+			'statuses/destroy'				=> array('required'=>array('id'),'#id'=>'id','http'=>'post'), 
+			'statuses/retweet'				=> array('required'=>array('id'),'#id'=>'id','http'=>'post'),
+			'statuses/retweets'				=> array('required'=>array('id'),'#id'=>'id'),
+			'statuses/id/retweeted_by'		=> array('method'=>'statuses/#id/retweeted_by','required'=>array('id'),'#id'=>'id'),
+			'statuses/id/retweeted_by/ids'	=> array('method'=>'statuses/#id/retweeted_by/ids','required'=>array('id'),'#id'=>'id'),
+		
+			// User Methods
+			'users/show'					=> array('#id'=>'id','auth'=>false),
+			'users/lookup'					=> array(),
+			'users/search'					=> array('required'=>array('q')),
+			'users/suggestions'				=> array(),
+			'users/suggestions/category'	=> array('method'=>'users/suggestions','#id'=>'slug','required'=>array('slug')),
+			'statuses/friends'				=> array('#id'=>'id','auth'=>false),
+			'statuses/followers'			=> array('#id'=>'id','auth'=>false),
+		
+			// List Methods
+			// List Members Methods
+			// List Subscribers Methods
+			// Direct Message Methods 
+		
+			// Friendship Methods
+			'friendships/create'	=> array('#id'=>'id','http'=>'post'),
+			'friendships/destroy'	=> array('#id'=>'id','http'=>'post'),
+			'friendships/exists'	=> array('required'=>array('user_a','user_b')),
+			'friendships/show'		=> array('#id'=>'id'),
+		
+			// Social Graph Methods
+			'friends/ids'	=> array('#id'=>'id','auth'=>false),
+			'followers/ids'	=> array('#id'=>'id','auth'=>false),
+		
+			// Account Methods
+			// Favorite Methods
+			// Notification Methods
+			// Block Methods
+			// Spam Reporting Methods
+			// Saved Searches Methods
+			// OAuth Methods
+		
+			// Trends Methods
+			'trends/available'	=> array('auth'=>false),
+			'trends/locations'	=> array('method'=>'trends','#id'=>'woeid','required'=>array('woeid'),'auth'=>false),
+			'trends'			=> array('auth'=>false),
+			'trends/current'	=> array('auth'=>false),
+			'trends/daily'		=> array('auth'=>false),
+			'trends/weekly'		=> array('auth'=>false),
+		
+			// Geo methods
+			// Help Methods
+		);
+	
+		$this->streamingApis = array(
+			'spritzer' => array('url'=>self::STREAM_URL,'streaming'=>true),
+			'statuses/filter' => array('url'=>self::STREAM_URL,'http'=>'post','streaming'=>true),
+			'statuses/firehose' => array('url'=>self::STREAM_URL,'streaming'=>true),
+			'statuses/retweet' => array('url'=>self::STREAM_URL,'streaming'=>true),
+			'statuses/sample' => array('url'=>self::STREAM_URL,'streaming'=>true),
+		);
 	}
 	
 	/**
@@ -121,6 +150,17 @@ class Twitter
 			return true;
 		}
 		return false;
+	}
+	
+	/**
+	 * extends API
+	 * @param array $apis
+	 * @param array $streamingApis
+	 */
+	public function extend(array $apis, array $streamingApis = array())
+	{
+		$this->apis = array_merge($this->apis, $apis);
+		$this->streamingApis = array_merge($this->streamingApis, $streamingApis);
 	}
 	
 	/**
@@ -203,10 +243,10 @@ class Twitter
 	 */
 	public function call($methodName, array $params = array())
 	{
-		if (!array_key_exists($methodName, $this->_apis)) {
+		if (!array_key_exists($methodName, $this->apis)) {
 			throw new Twitter_Exception('This method is not supported: '.$methodName);
 		}
-		$config = array_merge($this->_defaultConfigration, $this->_apis[$methodName]);
+		$config = array_merge($this->_defaultConfigration, $this->apis[$methodName]);
 		
 		foreach ($config['required'] as $key) {
 			if (!array_key_exists($key, $params)) {
@@ -215,20 +255,26 @@ class Twitter
 		}
 		
 		// make url {method}.{format} or {method}/{id}.{format}
+		$method = (isset($config['method'])) ? $config['method'] : $methodName;
 		$format = 'json';
 		$key = $config['#id'];
 		$id = ($key!=null && array_key_exists($key,$params)) ? $params[$key] : null;
 		if ($id!=null) {
 			unset($params[$key]);
-			$url = sprintf('%s/%s/%s.%s',$config['url'], $methodName, $id, $format);
+			if (false !== strpos($method,'#id')) {
+				$method = str_replace('#id',$id,$method);
+				$url = sprintf('%s/%s.%s',$config['url'], $method, $format);
+			} else {
+				$url = sprintf('%s/%s/%s.%s',$config['url'], $method, $id, $format);
+			}
 		} else {
-			$url = sprintf('%s/%s.%s',$config['url'], $methodName, $format);
+			$url = sprintf('%s/%s.%s',$config['url'], $method, $format);
 		}
 		
 		$request = $this->createRequest();
 		$request->useAssociativeArray($this->_assoc);
 		$request->setUserAgent($this->getUserAgent());
-		$method = $config['method'].'JSON';
+		$method = $config['http'].'JSON';
 		return $request->$method($url, $params, ($config['auth']) ? $this->getAuth() : null);
 	}
 	
@@ -241,10 +287,10 @@ class Twitter
 	 */
 	public function streaming($methodName, array $params = array(), $callback = null)
 	{
-		if (!array_key_exists($methodName, $this->_streamingApis)) {
+		if (!array_key_exists($methodName, $this->streamingApis)) {
 			throw new Twitter_Exception('This method is not supported: '.$methodName);
 		}
-		$config = array_merge($this->_defaultConfigration, $this->_streamingApis[$methodName]);
+		$config = array_merge($this->_defaultConfigration, $this->streamingApis[$methodName]);
 		
 		foreach ($config['required'] as $key) {
 			if (!array_key_exists($key, $params)) {
@@ -253,14 +299,15 @@ class Twitter
 		}
 		
 		// make url {method}.{format} or {method}/{id}.{format}
+		$method = (isset($config['method'])) ? $config['method'] : $methodName;
 		$format = 'json';
 		$key = $config['#id'];
 		$id = ($key!=null && array_key_exists($key,$params)) ? $params[$key] : null;
 		if ($id!=null) {
 			unset($params[$key]);
-			$url = sprintf('%s/%s/%s.%s',$config['url'], $methodName, $id, $format);
+			$url = sprintf('%s/%s/%s.%s',$config['url'], $method, $id, $format);
 		} else {
-			$url = sprintf('%s/%s.%s',$config['url'], $methodName, $format);
+			$url = sprintf('%s/%s.%s',$config['url'], $method, $format);
 		}
 		
 		if (get_class($this->getAuth()) != 'Twitter_Auth_Basic') {
@@ -271,7 +318,7 @@ class Twitter
 		$request = new Twitter_Request_Streaming();
 		$request->useAssociativeArray($this->_assoc);
 		$request->setUserAgent($this->getUserAgent());
-		$method = $config['method'].'JSON';
+		$method = $config['http'].'JSON';
 		return $request->$method($url, $params, $this->getAuth(), $callback);
 	}
 	

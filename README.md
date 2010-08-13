@@ -72,6 +72,24 @@ Using Streaming API with BasicAuth
 		return ($count++<5);
 	}
 	?>
+	
+Extends new Twitter API
+-----------------------------------------------------------
+
+	<?php
+	require_once 'Twitter.php';
+	
+	$user = 'your account';
+	$pass = 'your password';
+	
+	$twitter = new Twitter();
+	$twitter->extend(array(
+		'statuses/id/retweeted_by'=>array('url'=>Twitter::API_URL,'method'=>'statuses/#id/retweeted_by','required'=>array('id'),'#id'=>'id'),
+		'statuses/id/retweeted_by/ids'=>array('url'=>Twitter::API_URL,'method'=>'statuses/#id/retweeted_by/ids','required'=>array('id'),'#id'=>'id'),
+		'trends/available' => array('url'=>Twitter::API_URL,'auth'=>false),
+		'trends/locations' => array('url'=>Twitter::API_URL,'method'=>'trends','#id'=>'woeid','required'=>array('woeid'),'auth'=>false),
+	));
+	?>
 
 LIMITATIONS
 ===========
@@ -82,22 +100,32 @@ LIMITATIONS
 TODO
 ===========
 
- * Fix that OAuth part have deprecated function on PHP 5.3 or later
- * Surpport List Methods
- * Surpport List Members Methods
- * Surpport List Subscribers Methods
- * Surpport Direct Message Methods
- * Surpport Friendship Methods
- * Surpport Account Methods
- * Surpport Favorite Methods
- * Surpport Notification Methods
- * Surpport Block Methods
- * Surpport Spam Reporting Methods
- * Surpport Saved Searches Methods
- * Surpport Help Methods
+ * Support List Methods
+ * Support List Members Methods
+ * Support List Subscribers Methods
+ * Support Direct Message Methods
+ * Support new Friendship Methods
+ * Support Friendship Methods
+ * Support Account Methods
+ * Support Favorite Methods
+ * Support Notification Methods
+ * Support Block Methods
+ * Support Spam Reporting Methods
+ * Support Saved Searches Methods
+ * Support OAuth Methods
+ * Support Geo methods
+ * Support Help Methods
 
 HISTORY
 ============
+
+v0.3
+----------------
+
+ * Suppoted to override API settings: Twitter->apis and Twitter->streamingApis are public attributes
+ * Fixed that OAuth part have deprecated function on PHP 5.3 or later
+ * Supported Trends Methods
+ * Updated Status Methods and User Methods
 
 v0.2
 ----------------

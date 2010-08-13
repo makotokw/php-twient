@@ -1,6 +1,6 @@
 <?php
 require_once dirname(__FILE__).'/lime/lime.php';
-require_once dirname(__FILE__).'/../src/Twitter.php';
+require_once dirname(__FILE__).'/../lib/Twitter.php';
 $t = new lime_test(3, new lime_output_color());
 
 try {
