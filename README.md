@@ -119,6 +119,11 @@ TODO
 HISTORY
 ============
 
+v0.3.1
+----------------
+
+ * Uses the Services_JSON instead of json_decode when PHP < 5.2.0
+
 v0.3
 ----------------
 

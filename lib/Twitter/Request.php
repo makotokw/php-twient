@@ -134,26 +134,11 @@ class Twitter_Request
 }
 
 // from http://php.net/manual/en/function.json-decode.php
-if ( !function_exists('json_decode') ){
-	function json_decode($json)
+if (!function_exists('json_decode')) {
+	if (!class_exists('Services_JSON')) require_once dirname(__FILE__).'/../vendor/Services_JSON/JSON.php';
+	function json_decode($content, $assoc=false)
 	{
-		// Author: walidator.info 2009
-		$comment = false;
-		$out = '$x=';
-
-		for ($i=0; $i<strlen($json); $i++)
-		{
-			if (!$comment)
-			{
-				if ($json[$i] == '{')        $out .= ' array(';
-				else if ($json[$i] == '}')    $out .= ')';
-				else if ($json[$i] == ':')    $out .= '=>';
-				else                         $out .= $json[$i];
-			}
-			else $out .= $json[$i];
-			if ($json[$i] == '"')    $comment = !$comment;
-		}
-		eval($out . ';');
-		return $x;
+		$json = new Services_JSON(($assoc) ? SERVICES_JSON_LOOSE_TYPE : 0);
+		return $json->decode($content);
 	}
 }
