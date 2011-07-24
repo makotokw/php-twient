@@ -22,13 +22,13 @@ try {
 	foreach (array('Twitter_Request','Twitter_Request_Curl') as $class) {
 		$twitter->setRequestClass($class);
 		$s = $twitter->call('statuses/show',array('id'=>'21036914236'));
-		$t->ok(isset($s['id']),$class.' statuses/show');
+		$t->ok(isset($s['id_str']),$class.' statuses/show');
 		$s = $twitter->call('statuses/update',array('status'=>$class.' posted at '.time()));
-		$t->ok(isset($s['id']),$class.' statuses/update');
+		$t->ok(isset($s['id_str']),$class.' statuses/update');
 		sleep(1);
-		if (isset($s['id'])) {
-			$s = $twitter->call('statuses/destroy',array('id'=>$s['id']));
-			$t->ok(isset($s['id']),$class.' statuses/destroy');
+		if (isset($s['id_str'])) {
+			$s = $twitter->call('statuses/destroy',array('id'=>$s['id_str']));
+			$t->ok(isset($s['id_str']),$class.' statuses/destroy');
 		}
 		$users = $twitter->call('statuses/id/retweeted_by',array('id'=>'21036914236'));
 		$t->ok(isset($users[0]['id']),$class.' statuses/id/retweeted_by');
