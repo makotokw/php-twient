@@ -51,12 +51,19 @@ class Twitter_Exception extends Exception
 									503 => 'Service Unavailable',
 									504 => 'Gateway Timeout',
 									505 => 'HTTP Version Not Supported');
+
+	protected $_responseBody = null;
 									
-	public function __construct($message = null, $code = null)
+	public function __construct($message = null, $code = null, $body = null)
 	{
 		if (!$message && array_key_exists($code, $this->statusCodes)) {
 			$message = $this->statusCodes[$code];
 		}
+		$this->_responseBody = $body;
 		parent::__construct((string)$message, $code);
+	}
+
+	public function getResponseBody() {
+		return $_responseBody;
 	}
 }

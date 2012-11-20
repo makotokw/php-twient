@@ -60,10 +60,7 @@ class Twitter_Request
 	public function get($url, array $params = array(), $auth = false)
 	{
 		$method = 'GET';
-		$headers = array(
-			'User-Agent: '.$this->getUserAgent(),
-		);
-		
+		$headers = array();
 		if ($auth) {
 			$signedData = $auth->sign(array('url'=>$url, 'method'=>$method, 'params'=>$params));
 			$url = $signedData['url'];
@@ -76,49 +73,59 @@ class Twitter_Request
 				$url .= ((strpos($url,'?')===false) ? '?' : '&').http_build_query($params);
 			}
 		}
-		$opt = array(
-			'http' => array(
-				'method'    => $method,
-				'header'    => implode("\r\n", $headers),
-			)
-		);
-		$contents = @file_get_contents($url, false, stream_context_create($opt));
-		if ($contents === false) throw new Twitter_Exception('http error');
-		return $contents;
+		return $this->_request($url, $method, $headers);
 	}
 	
 	public function post($url, array $params = array(), $auth = false)
 	{
 		$method = 'POST';
-		$headers = array(
-			'User-Agent: '.$this->getUserAgent(),
-		);
-		
+		$headers = array();
+		$postData = null;
 		if ($auth) {
 			$signedData = $auth->sign(array('url'=>$url, 'method'=>$method, 'params'=>$params));
 			$url = $signedData['url'];
-			$content = $signedData['post_data'];
+			$postData = $signedData['post_data'];
 			if (isset($signedData['headers'])) {
 				$headers = array_merge($headers, $signedData['headers']);
 			}
 		} else {
-			$content = http_build_query($params);
+			$postData = http_build_query($params);
 		}
-		
+		return $this->_request($url, $method, $headers, $postData);
+	}
+	
+	protected function _request($url, $method, $headers = array(), $postData = NULL)
+	{
+
 		$headers = array_merge($headers, array(
+			'User-Agent: '.$this->getUserAgent(),
+			));
+
+		if ($postData) {
+			$headers = array_merge($headers, array(
 				'Content-Type: application/x-www-form-urlencoded',
-				'Content-Length: '.strlen($content),
-		));
-		
+				'Content-Length: '.strlen($postData)
+				));
+		}
+
 		$opt = array(
 			'http' => array(
-				'method'    => $method,
-				'header'    => implode("\r\n", $headers),
-				'content'   => $content
-			)
-		);
+				'protocol_version'=>'1.1',
+				'method'        => $method,
+				'header'        => implode("\r\n", $headers),
+				'ignore_errors' => true,
+				)
+			);
+
+		if ($postData) {
+			$opt['http']['content'] = $postData;
+		}
+
 		$contents = file_get_contents($url, false, stream_context_create($opt));
-		if ($contents === false) throw new Twitter_Exception('http error');
+		list ($version, $statusCode, $msg) = explode(' ', $http_response_header[0], 3);
+		if ($statusCode != 200) {
+			throw new Twitter_Exception($msg, $statusCode, $contents);
+		}
 		return $contents;
 	}
 	

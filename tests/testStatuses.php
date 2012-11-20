@@ -1,7 +1,7 @@
 <?php
 require_once dirname(__FILE__).'/lime/lime.php';
 require_once dirname(__FILE__).'/../lib/Twitter.php';
-$t = new lime_test(12, new lime_output_color());
+$t = new lime_test(10, new lime_output_color());
 
 try {
 	// php-twient
@@ -26,6 +26,7 @@ try {
 		$s = $twitter->call('statuses/update',array('status'=>$class.' posted at '.time()));
 		$t->ok(isset($s['id_str']),$class.' statuses/update');
 		sleep(1);
+		
 		if (isset($s['id_str'])) {
 			$s = $twitter->call('statuses/destroy',array('id'=>$s['id_str']));
 			$t->ok(isset($s['id_str']),$class.' statuses/destroy');
@@ -34,8 +35,7 @@ try {
 		$t->ok(isset($users[0]['id']),$class.' statuses/id/retweeted_by');
 		$users = $twitter->call('statuses/id/retweeted_by/ids',array('id'=>'21036914236'));
 		$t->ok(count($users),$class.' statuses/id/retweeted_by');
-		
-		exit;
+		sleep(1);
 	}
 } catch (Twitter_Exception $e) {
 	$t->fail($e);

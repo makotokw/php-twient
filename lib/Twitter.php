@@ -5,7 +5,7 @@
  * PHP versions 5
  *
  * @author     makoto_kw <makoto.kw@gmail.com>
- * @version    0.2
+ * @version    0.3
  * @license    New BSD License, http://www.opensource.org/licenses/bsd-license.php
  * @link       http://github.com/makotokw/php-twient
  */
@@ -117,7 +117,7 @@ class Twitter
 			'statuses/firehose' => array('url'=>self::STREAM_URL,'streaming'=>true),
 			'statuses/retweet' => array('url'=>self::STREAM_URL,'streaming'=>true),
 			'statuses/sample' => array('url'=>self::STREAM_URL,'streaming'=>true),
-		);
+			);
 	}
 	
 	/**

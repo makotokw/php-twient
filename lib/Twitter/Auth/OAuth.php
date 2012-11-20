@@ -57,7 +57,7 @@ class Twitter_Auth_OAuth
 	public function sign(array $data)
 	{
 		$signedData = $data;
-		$signedData['headers'] = array('Expect:');
+		$signedData['headers'] = array();
 		
 		$req = OAuthRequest::from_consumer_and_token($this->_consumer, $this->_token, strtoupper($data['method']), $data['url'], $data['params']);
 		$req->sign_request($this->_signatureMethod, $this->_consumer, $this->_token);
