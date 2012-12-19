@@ -9,10 +9,27 @@
  */
 class Twitter_Request
 {
+	protected $_core;
 	protected $_headers = array();
 	protected $_userAgent;
 	protected $_timeout = 30;
 	protected $_assoc = true;
+
+	/**
+	 *	@return Twitter 
+	 */
+	public function getCore()
+	{
+		return $this->_core;
+	}
+
+	/**
+	 * @param Twitter $core
+	 */
+	public function setCore(Twitter $core)
+	{
+		$this->_core = $core;
+	}
 	
 	/**
 	 * Gets the user agent for the HTTP Request to twitter

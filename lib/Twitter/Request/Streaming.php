@@ -12,11 +12,14 @@ class Twitter_Request_Streaming extends Twitter_Request
 	protected function _streaming($stream, $callback)
 	{ 
 		$count = 0;
-		while ($data = fgets($stream)) {
-			$count++;
-			$status = json_decode($data, $this->_assoc);
-			if (!call_user_func($callback, $status)) {
-				break;
+		$core = $this->getCore();
+		if ($stream) {
+			while ($data = fgets($stream)) {
+				$count++;
+				$status = json_decode($data, $this->_assoc);
+				if (!call_user_func($callback, $core, $status)) {
+					break;
+				}
 			}
 		}
 		return $count;
@@ -42,7 +45,6 @@ class Twitter_Request_Streaming extends Twitter_Request
 			)
 		);
 		return $this->_streaming(fopen($url, 'r' ,false, stream_context_create($opt)), $callback);
-		
 	}
 	
 	public function postJSON($url, array $params = array(), $auth = false, $callback = null)

@@ -11,6 +11,10 @@ class Twitter_Request_Curl extends Twitter_Request
 {
 	protected function _request($url, $method, $headers = array(), $postData = NULL)
 	{
+		if (!function_exists('curl_init')) {
+			throw new Twitter_Exception('php_curl is not found');
+		}
+
 		$ci = curl_init();
 
 		$headers = array_merge($headers, array(

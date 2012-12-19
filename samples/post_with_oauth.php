@@ -23,5 +23,5 @@ try {
 	$twitter->call('statuses/update',array('status'=>$status));
 
 } catch (Exception $e) {
-	echo $e;
+	echo $e.PHP_EOL;
 }
