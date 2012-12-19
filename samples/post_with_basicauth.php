@@ -1,5 +1,4 @@
 <?php
-require_once dirname(__FILE__).'/../lib/Twitter.php';
 try {
 	$twitter = new Twitter();
 	echo sprintf("Use %s class\r\n", $twitter->getRequestClass());

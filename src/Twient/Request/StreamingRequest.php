@@ -1,13 +1,15 @@
 <?php
 /**
- * Twitter_Request_Streaming class
- * 
- * PHP versions 5
+ * Twient\Request\StreamingRequest class
+ * This file is part of the Twient package.
  *
  * @author     makoto_kw <makoto.kw@gmail.com>
  * @license    New BSD License, http://www.opensource.org/licenses/bsd-license.php
  */
-class Twitter_Request_Streaming extends Twitter_Request
+
+namespace Twient\Request;
+
+class StreamingRequest extends BaseRequest
 {
 	protected function _streaming($stream, $callback)
 	{ 
@@ -24,8 +26,15 @@ class Twitter_Request_Streaming extends Twitter_Request
 		}
 		return $count;
 	}
-	
-	public function getJSON($url, array $params = array(), $auth = false, $callback = null)
+
+	/**
+	 * @param $url
+	 * @param array $params
+	 * @param \Twient\Auth\AuthInterface $auth
+	 * @param $callback
+	 * @return int|mixed
+	 */
+	public function getJSON($url, array $params = array(), $auth = null, $callback = null)
 	{
 		$method = 'GET';
 		$headers = array(
@@ -34,7 +43,6 @@ class Twitter_Request_Streaming extends Twitter_Request
 		
 		$signedData = $auth->sign(array('url'=>$url, 'method'=>$method, 'params'=>$params));
 		$url = $signedData['url'];
-		$params = $signedData['params'];
 		if (isset($signedData['headers'])) {
 			$headers = array_merge($headers, $signedData['headers']);
 		}
@@ -46,8 +54,15 @@ class Twitter_Request_Streaming extends Twitter_Request
 		);
 		return $this->_streaming(fopen($url, 'r' ,false, stream_context_create($opt)), $callback);
 	}
-	
-	public function postJSON($url, array $params = array(), $auth = false, $callback = null)
+
+	/**
+	 * @param $url
+	 * @param array $params
+	 * @param \Twient\Auth\AuthInterface $auth
+	 * @param null $callback
+	 * @return int|mixed
+	 */
+	public function postJSON($url, array $params = array(), $auth = null, $callback = null)
 	{
 		$method = 'POST';
 		$headers = array(

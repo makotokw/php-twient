@@ -1,13 +1,15 @@
 <?php
 /**
- * Twitter_Exception class
+ * Twient\Exception class
+ * This file is part of the Twient package.
  * 
- * PHP versions 5
- *
  * @author     makoto_kw <makoto.kw@gmail.com>
  * @license    New BSD License, http://www.opensource.org/licenses/bsd-license.php
  */
-class Twitter_Exception extends Exception
+
+namespace Twient;
+
+class Exception extends \Exception
 {
 	private $statusCodes = array(100 => 'Continue',
 									101 => 'Switching Protocols',
@@ -20,9 +22,7 @@ class Twitter_Exception extends Exception
 									206 => 'Partial Content',
 									300 => 'Multiple Choices',
 									301 => 'Moved Permanently',
-									301 => 'Status code is received in response to a request other than GET or HEAD, the user agent MUST NOT automatically redirect the request unless it can be confirmed by the user, since this might change the conditions under which the request was issued.',
 									302 => 'Found',
-									302 => 'Status code is received in response to a request other than GET or HEAD, the user agent MUST NOT automatically redirect the request unless it can be confirmed by the user, since this might change the conditions under which the request was issued.',
 									303 => 'See Other',
 									304 => 'Not Modified',
 									305 => 'Use Proxy',
@@ -63,7 +63,8 @@ class Twitter_Exception extends Exception
 		parent::__construct((string)$message, $code);
 	}
 
-	public function getResponseBody() {
-		return $_responseBody;
+	public function getResponseBody()
+	{
+		return $this->_responseBody;
 	}
 }

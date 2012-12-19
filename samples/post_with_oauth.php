@@ -1,5 +1,4 @@
 <?php
-require_once dirname(__FILE__).'/../lib/Twitter.php';
 try {
 	// php-twilent
 	$consumer_key = 'Y8rq4tcFLhqVEUKV4FvZA';

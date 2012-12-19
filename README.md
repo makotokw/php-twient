@@ -6,9 +6,9 @@ php-twient is a php twitter client library.
 FEATURES
 ==========
 
- * PHP5 Object Oriented
+ * PHP5.3 Object Oriented
+ * Composer package
  * Supports basicAuth and OAuth both
- * Supports autoload
  * Should work with/without php_curl (detects php_curl automatically)
  * Supported Search API and REST API by Twitter::call method
  * Supported Streaming API by Twitter::streaming method
@@ -94,7 +94,7 @@ Extends new Twitter API
 LIMITATIONS
 ===========
 
- * Not supported on PHP4
+ * Not supported on PHP5.2 or later
  * No test for statuses/firehose and statuses/retweet due to not have access level
 
 TODO
@@ -118,6 +118,12 @@ TODO
 
 HISTORY
 ============
+
+v0.4
+----------------
+
+ * Updated to Composer package
+
 
 v0.3.1
 ----------------

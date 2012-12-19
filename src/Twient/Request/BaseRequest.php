@@ -1,18 +1,41 @@
 <?php
 /**
- * Twitter_Request class
+ * Twient\Request\BaseRequest class
+ * This file is part of the Twient package.
  * 
- * PHP versions 5
- *
  * @author     makoto_kw <makoto.kw@gmail.com>
  * @license    New BSD License, http://www.opensource.org/licenses/bsd-license.php
  */
-class Twitter_Request
+
+namespace Twient\Request;
+
+use Twient\Twitter;
+
+class BaseRequest
 {
+	/**
+	 * @var Twitter
+	 */
 	protected $_core;
+
+	/**
+	 * @var array
+	 */
 	protected $_headers = array();
+
+	/**
+	 * @var string
+	 */
 	protected $_userAgent;
+
+	/**
+	 * @var int
+	 */
 	protected $_timeout = 30;
+
+	/**
+	 * @var bool
+	 */
 	protected $_assoc = true;
 
 	/**
@@ -73,8 +96,14 @@ class Twitter_Request
 	{
 		$this->_headers = array_merge($this->_headers, $headers);
 	}
-	
-	public function get($url, array $params = array(), $auth = false)
+
+	/**
+	 * @param $url
+	 * @param array $params
+	 * @param \Twient\Auth\AuthInterface $auth
+	 * @return string
+	 */
+	public function get($url, array $params = array(), $auth = null)
 	{
 		$method = 'GET';
 		$headers = array();
@@ -92,8 +121,14 @@ class Twitter_Request
 		}
 		return $this->_request($url, $method, $headers);
 	}
-	
-	public function post($url, array $params = array(), $auth = false)
+
+	/**
+	 * @param $url
+	 * @param array $params
+	 * @param \Twient\Auth\AuthInterface $auth
+	 * @return string
+	 */
+	public function post($url, array $params = array(), $auth = null)
 	{
 		$method = 'POST';
 		$headers = array();
@@ -110,13 +145,20 @@ class Twitter_Request
 		}
 		return $this->_request($url, $method, $headers, $postData);
 	}
-	
+
+	/**
+	 * @param $url
+	 * @param $method
+	 * @param array $headers
+	 * @param null $postData
+	 * @return string
+	 * @throws \Twient\Exception
+	 */
 	protected function _request($url, $method, $headers = array(), $postData = NULL)
 	{
-
 		$headers = array_merge($headers, array(
 			'User-Agent: '.$this->getUserAgent(),
-			));
+		));
 
 		if ($postData) {
 			$headers = array_merge($headers, array(
@@ -141,28 +183,33 @@ class Twitter_Request
 		$contents = file_get_contents($url, false, stream_context_create($opt));
 		list ($version, $statusCode, $msg) = explode(' ', $http_response_header[0], 3);
 		if ($statusCode != 200) {
-			throw new Twitter_Exception($msg, $statusCode, $contents);
+			$msg .= ',url='.$url;
+			throw new \Twient\Exception($msg, $statusCode, $contents);
 		}
 		return $contents;
 	}
-	
+
+	/**
+	 * @param $url
+	 * @param array $params
+	 * @param bool $auth
+	 * @param null $callback
+	 * @return mixed
+	 */
 	public function getJSON($url, array $params = array(), $auth = false, $callback = null)
 	{
 		return json_decode($this->get($url, $params, $auth), $this->_assoc);
 	}
 
+	/**
+	 * @param $url
+	 * @param array $params
+	 * @param bool $auth
+	 * @param null $callback
+	 * @return mixed
+	 */
 	public function postJSON($url, array $params = array(), $auth = false, $callback = null)
 	{
 		return json_decode($this->post($url, $params, $auth), $this->_assoc);
-	}
-}
-
-// from http://php.net/manual/en/function.json-decode.php
-if (!function_exists('json_decode')) {
-	if (!class_exists('Services_JSON')) require_once dirname(__FILE__).'/../vendor/Services_JSON/JSON.php';
-	function json_decode($content, $assoc=false)
-	{
-		$json = new Services_JSON(($assoc) ? SERVICES_JSON_LOOSE_TYPE : 0);
-		return $json->decode($content);
 	}
 }

@@ -1,13 +1,15 @@
 <?php
 /**
- * Twitter_TinyUrl class
- * 
- * PHP versions 5
+ * Twient\TinyUrl class
+ * This file is part of the Twient package.
  *
  * @author     makoto_kw <makoto.kw@gmail.com>
  * @license    New BSD License, http://www.opensource.org/licenses/bsd-license.php
  */
-class Twitter_TinyUrl
+
+namespace Twient;
+
+class TinyUrl
 {
 	const URL = 'http://tinyurl.com/api-create.php';
 	
@@ -18,7 +20,7 @@ class Twitter_TinyUrl
 	 */
 	static function create($url)
 	{
-		$req = new Twitter_Request();
-		return $req->get(self::URL,array('url'=>$url));
+		$request = new \Twient\Request\BaseRequest();
+		return $request->get(self::URL,array('url'=>$url));
 	}
 }

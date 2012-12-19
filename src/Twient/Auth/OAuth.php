@@ -1,15 +1,15 @@
 <?php
-require_once dirname(__FILE__).'/../../vendor/OAuth/OAuth.php';
-
 /**
- * Twitter_Auth_OAuth class
+ * Twient\Auth\OAuth class
+ * This file is part of the Twient package.
  * 
- * PHP versions 5
- *
  * @author     makoto_kw <makoto.kw@gmail.com>
  * @license    New BSD License, http://www.opensource.org/licenses/bsd-license.php
  */
-class Twitter_Auth_OAuth
+
+namespace Twient\Auth;
+
+class OAuth implements AuthInterface
 {
 	protected $_requestTokenUrl = 'http://twitter.com/oauth/request_token';
 	protected $_accessTokenUrl = 'http://twitter.com/oauth/access_token';
@@ -21,10 +21,10 @@ class Twitter_Auth_OAuth
 
 	function __construct($consumerKey, $consumerSecret, $oauthToken = null, $oauthTokenSecret = null)
 	{
-		$this->_signatureMethod = new OAuthSignatureMethod_HMAC_SHA1();
-		$this->_consumer = new OAuthConsumer($consumerKey, $consumerSecret);
+		$this->_signatureMethod = new \Twient\Auth\OAuth\HMACSHA1SignatureMethod();
+		$this->_consumer = new \Twient\Auth\OAuth\Consumer($consumerKey, $consumerSecret);
 		if (!empty($oauthToken) && !empty($oauthTokenSecret)) {
-			$this->_token = new OAuthConsumer($oauthToken, $oauthTokenSecret);
+			$this->_token = new \Twient\Auth\OAuth\Consumer($oauthToken, $oauthTokenSecret);
 		}
 	}
 
@@ -33,8 +33,8 @@ class Twitter_Auth_OAuth
 		$params = array();
 		if (!empty($callback)) $params['oauth_callback'] = $callback;
 		$response = $this->_request($this->_requestTokenUrl, 'GET', $params);
-		$token = OAuthUtil::parse_parameters($response);
-		$this->_token = new OAuthConsumer($token['oauth_token'], $token['oauth_token_secret']);
+		$token = \Twient\Auth\OAuth\Util::parseParameters($response);
+		$this->_token = new \Twient\Auth\OAuth\Consumer($token['oauth_token'], $token['oauth_token_secret']);
 		return $token;
 	}
 
@@ -49,8 +49,8 @@ class Twitter_Auth_OAuth
 		$params = array();
 		if (!empty($verifier)) $params['oauth_verifier'] = $verifier;
 		$response = $this->_request($this->_accessTokenUrl, 'GET', $params);
-		$token = OAuthUtil::parse_parameters($response);
-		$this->_token = new OAuthConsumer($token['oauth_token'], $token['oauth_token_secret']);
+		$token = \Twient\Auth\OAuth\Util::parseParameters($response);
+		$this->_token = new \Twient\Auth\OAuth\Consumer($token['oauth_token'], $token['oauth_token_secret']);
 		return $token;
 	}
 	
@@ -59,18 +59,18 @@ class Twitter_Auth_OAuth
 		$signedData = $data;
 		$signedData['headers'] = array();
 		
-		$req = OAuthRequest::from_consumer_and_token($this->_consumer, $this->_token, strtoupper($data['method']), $data['url'], $data['params']);
+		$req = \Twient\Auth\OAuth\Request::fromConsumerAndToken($this->_consumer, $this->_token, strtoupper($data['method']), $data['url'], $data['params']);
 		$req->sign_request($this->_signatureMethod, $this->_consumer, $this->_token);
 
 		$method = strtolower($data['method']);
 		switch ($method) {
 			case 'get':
-				$signedData['url'] = $req->to_url();
+				$signedData['url'] = $req->toUrl();
 				$signedData['params'] = array();
 				break;
 			default:
-				$signedData['url'] = $req->get_normalized_http_url();
-				$signedData['post_data'] = $req->to_postdata();
+				$signedData['url'] = $req->getNormalizedHttpUrl();
+				$signedData['post_data'] = $req->toPostData();
 				break;
 		}
 		return $signedData;
@@ -78,16 +78,16 @@ class Twitter_Auth_OAuth
 	
 	private function _request($url, $method, $params)
 	{
-		$request = OAuthRequest::from_consumer_and_token($this->_consumer, $this->_token, $method, $url, $params);
+		$request = \Twient\Auth\OAuth\Request::fromConsumerAndToken($this->_consumer, $this->_token, $method, $url, $params);
 		$request->sign_request($this->_signatureMethod, $this->_consumer, $this->_token);
 
-		$http = new Twitter_Request();
+		$http = new \Twient\Request\BaseRequest();
 		$method = strtolower($method);
 		switch ($method) {
 			case 'get':
-				return $http->get($request->to_url());
+				return $http->get($request->toUrl());
 			default:
-				return $http->$method($request->get_normalized_http_url(), $request->to_postdata());
+				return $http->$method($request->getNormalizedHttpUrl(), $request->toPostData());
 		}
 	}
 }

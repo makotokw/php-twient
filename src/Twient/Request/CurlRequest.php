@@ -1,18 +1,20 @@
 <?php
 /**
- * Twitter_Request_Curl class
- * 
- * PHP versions 5
+ * Twient\Request\CurlRequest class
+ * This file is part of the Twient package.
  *
  * @author     makoto_kw <makoto.kw@gmail.com>
  * @license    New BSD License, http://www.opensource.org/licenses/bsd-license.php
  */
-class Twitter_Request_Curl extends Twitter_Request
+
+namespace Twient\Request;
+
+class CurlRequest extends BaseRequest
 {
 	protected function _request($url, $method, $headers = array(), $postData = NULL)
 	{
 		if (!function_exists('curl_init')) {
-			throw new Twitter_Exception('php_curl is not found');
+			throw new \Twient\Exception('php_curl is not found');
 		}
 
 		$ci = curl_init();
@@ -46,7 +48,7 @@ class Twitter_Request_Curl extends Twitter_Request
 		curl_close($ci);
 		
 		if ($httpCode != 200) {
-			throw new Twitter_Exception(null, $httpCode, $response);
+			throw new \Twient\Exception(null, $httpCode, $response);
 		}
 		
 		return $response;

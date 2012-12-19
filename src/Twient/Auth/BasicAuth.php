@@ -1,13 +1,15 @@
 <?php
 /**
- * Twitter_Auth_Basic class
- * 
- * PHP versions 5
+ * Twient\Auth\BasicAuth class
+ * This file is part of the Twient package.
  *
  * @author     makoto_kw <makoto.kw@gmail.com>
  * @license    New BSD License, http://www.opensource.org/licenses/bsd-license.php
  */
-class Twitter_Auth_Basic extends Twitter_Auth
+
+namespace Twient\Auth;
+
+class BasicAuth implements AuthInterface
 {
 	protected $_username;
 	protected $_password;
