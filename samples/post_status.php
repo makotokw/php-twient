@@ -1,6 +1,11 @@
 <?php
+
+require_once __DIR__ .'/bootstrap.php';
+
+use Twient\Twitter;
+
 try {
-	// php-twilent
+	// @php-twilent
 	$consumer_key = 'Y8rq4tcFLhqVEUKV4FvZA';
 	$consumer_secret = 'l2PLP0BCr2pJ5amdSDIRDbtaBVku6QEf3iCNvo8CzeE';
 
