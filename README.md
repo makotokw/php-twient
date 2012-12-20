@@ -6,8 +6,8 @@ php-twient is a php twitter client library.
 FEATURES
 ==========
 
- * PHP5.3 Object Oriented
  * Composer package
+ * Supports namespace for PHP 5.3+
  * Supports basicAuth and OAuth both
  * Should work with/without php_curl (detects php_curl automatically)
  * Supported Search API and REST API by Twitter::call method
@@ -20,13 +20,9 @@ Using without authentication for REST/Search API
 ----------------------------------------------------
 
 	<?php
-	require_once 'Twitter.php';
+	use Twient\Twitter;
+
 	$twitter = new Twitter();
-	$statuses = $twitter->call('statuses/public_timeline');
-	foreach ($statuses as $status) {
-		echo $status['user']['name'].': ';
-		echo $status['text'].PHP_EOL;
-	}
 	$r = $twitter->call('search',array('q'=>'Sushi'));
 	foreach ($r['results'] as $status) {
 		echo $status['from_user'].': ';
@@ -38,7 +34,7 @@ Gets your timeline with OAuth
 ----------------------------------------------------
 
 	<?php
-	require_once 'Twitter.php';
+	use Twient\Twitter;
 	
 	$consumer_key = 'consumer key for your application';
 	$consumer_secret = 'consumer secret for your application';
@@ -58,7 +54,7 @@ Using Streaming API with BasicAuth
 ----------------------------------------------------
 
 	<?php
-	require_once 'Twitter.php';
+	use Twient\Twitter;
 	
 	$user = 'your account';
 	$pass = 'your password';
@@ -73,21 +69,16 @@ Using Streaming API with BasicAuth
 	}
 	?>
 	
-Extends new Twitter API
+Extends to use Twitter API that is not defined on twient package
 -----------------------------------------------------------
 
 	<?php
-	require_once 'Twitter.php';
-	
-	$user = 'your account';
-	$pass = 'your password';
-	
+	use Twient\Twitter;
+
 	$twitter = new Twitter();
 	$twitter->extend(array(
-		'statuses/id/retweeted_by'=>array('url'=>Twitter::API_URL,'method'=>'statuses/#id/retweeted_by','required'=>array('id'),'#id'=>'id'),
-		'statuses/id/retweeted_by/ids'=>array('url'=>Twitter::API_URL,'method'=>'statuses/#id/retweeted_by/ids','required'=>array('id'),'#id'=>'id'),
-		'trends/available' => array('url'=>Twitter::API_URL,'auth'=>false),
-		'trends/locations' => array('url'=>Twitter::API_URL,'method'=>'trends','#id'=>'woeid','required'=>array('woeid'),'auth'=>false),
+		'statuses/:id/retweeted_by'=>array('url'=>Twitter::API_URL,'required'=>array('id'),'$1'=>'id'),
+		'statuses/:id/retweeted_by/ids'=>array('url'=>Twitter::API_URL, required'=>array('id'),'$1'=>'id'),
 	));
 	?>
 
@@ -123,6 +114,7 @@ v0.4
 ----------------
 
  * Updated to Composer package
+ * Required PHP5.3+
 
 
 v0.3.1
