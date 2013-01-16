@@ -85,7 +85,7 @@ Extends to use Twitter API that is not defined on twient package
 LIMITATIONS
 ===========
 
- * Not supported on PHP5.2 or later
+ * Not supported on PHP5.2 or older
  * No test for statuses/firehose and statuses/retweet due to not have access level
 
 TODO
