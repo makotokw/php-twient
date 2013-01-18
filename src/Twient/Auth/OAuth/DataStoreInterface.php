@@ -4,9 +4,13 @@ namespace Twient\Auth\OAuth;
 
 interface DataStoreInterface
 {
-	function lookupConsumer($consumerKey);
-	function lookupToken($consumer, $tokenType, $token);
-	function lookupNonce($consumer, $token, $nonce, $timestamp);
-	function newRequestToken($consumer);
-	function newAccessToken($token, $consumer);
+    public function lookupConsumer($consumerKey);
+
+    public function lookupToken($consumer, $tokenType, $token);
+
+    public function lookupNonce($consumer, $token, $nonce, $timestamp);
+
+    public function newRequestToken($consumer);
+
+    public function newAccessToken($token, $consumer);
 }

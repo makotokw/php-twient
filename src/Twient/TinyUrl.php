@@ -11,16 +11,16 @@ namespace Twient;
 
 class TinyUrl
 {
-	const URL = 'http://tinyurl.com/api-create.php';
-	
-	/**
-	 * Creates tiny url
-	 * @param string $url
-	 * @return string tiny url
-	 */
-	static function create($url)
-	{
-		$request = new \Twient\Request\BaseRequest();
-		return $request->get(self::URL,array('url'=>$url));
-	}
+    const URL = 'http://tinyurl.com/api-create.php';
+
+    /**
+     * Creates tiny url
+     * @param string $url
+     * @return string tiny url
+     */
+    public static function create($url)
+    {
+        $request = new \Twient\Request\BaseRequest();
+        return $request->get(self::URL, array('url' => $url));
+    }
 }
