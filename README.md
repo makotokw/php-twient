@@ -147,5 +147,5 @@ v0.1
 LICENSE
 =========
 
-MIT License
+The MIT License (MIT)
 See also LICENSE file
