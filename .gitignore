@@ -1,5 +1,5 @@
-vendor
-composer.phar
-phpunit.xml
+vendor/
+.idea/
 composer.lock
+phpunit.xml
 .DS_Store

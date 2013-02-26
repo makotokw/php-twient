@@ -4,14 +4,14 @@
  * This file is part of the Twient package.
  *
  * @author     makoto_kw <makoto.kw@gmail.com>
- * @license    New BSD License, http://www.opensource.org/licenses/bsd-license.php
+ * @license    The MIT License
  */
 
 namespace Twient\Request;
 
 class StreamingRequest extends BaseRequest
 {
-    protected function doSreaming($stream, $callback)
+    protected function doStreaming($stream, $callback)
     {
         $count = 0;
         $core = $this->getCore();
@@ -52,7 +52,7 @@ class StreamingRequest extends BaseRequest
                 'header' => implode("\r\n", $headers),
             )
         );
-        return $this->doSreaming(fopen($url, 'r', false, stream_context_create($opt)), $callback);
+        return $this->doStreaming(fopen($url, 'r', false, stream_context_create($opt)), $callback);
     }
 
     /**
@@ -91,6 +91,6 @@ class StreamingRequest extends BaseRequest
                 'content' => $content
             )
         );
-        return $this->doSreaming(fopen($url, 'r', false, stream_context_create($opt)), $callback);
+        return $this->doStreaming(fopen($url, 'r', false, stream_context_create($opt)), $callback);
     }
 }

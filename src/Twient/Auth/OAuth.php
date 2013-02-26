@@ -4,16 +4,16 @@
  * This file is part of the Twient package.
  *
  * @author     makoto_kw <makoto.kw@gmail.com>
- * @license    New BSD License, http://www.opensource.org/licenses/bsd-license.php
+ * @license    The MIT License
  */
 
 namespace Twient\Auth;
 
 class OAuth implements AuthInterface
 {
-    protected $requestTokenUrl = 'http://twitter.com/oauth/request_token';
-    protected $accessTokenUrl = 'http://twitter.com/oauth/access_token';
-    protected $authorizeUrl = 'http://twitter.com/oauth/authorize';
+    protected $requestTokenUrl = 'https://api.twitter.com/oauth/request_token';
+    protected $authorizeUrl = 'https://api.twitter.com/oauth/authorize';
+    protected $accessTokenUrl = 'https://api.twitter.com/oauth/access_token';
 
     protected $signatureMethod = null;
     protected $consumer = null;
