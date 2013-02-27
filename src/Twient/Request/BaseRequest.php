@@ -187,10 +187,19 @@ class BaseRequest
         }
 
         $contents = file_get_contents($url, false, stream_context_create($opt));
-        list ($version, $statusCode, $msg) = explode(' ', $http_response_header[0], 3);
-        if ($statusCode != 200) {
-            $msg .= ',url=' . $url;
-            throw new \Twient\Exception($msg, $statusCode, $contents);
+
+        if (!empty($http_response_header)) {
+            foreach (array_reverse($http_response_header) as $header) {
+                if (preg_match('/^HTTP\/[0-9.]+ ([0-9]+)/', $header, $match)) {
+                    list ($version, $statusCode, $msg) = explode(' ', $header, 3);
+                    if ($statusCode < 200 || $statusCode >= 300) {
+                        $msg .= ',url=' . $url;
+                        throw new \Twient\Exception($msg, $statusCode, $contents);
+                    }
+                    // success
+                    break;
+                }
+            }
         }
         return $contents;
     }

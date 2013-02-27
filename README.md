@@ -15,7 +15,27 @@ FEATURES
 Usage
 ============
 
-Gets your timeline
+Install by Composer
+----------------------------------------------------
+
+Composer: http://getcomposer.org/
+
+    {
+        "repositories": [
+            {
+                "type": "vcs",
+                "url": "https://github.com/makotokw/php-twient"
+            }
+        ],
+        "require": {
+            "makotokw/twient": "dev-master"
+        }
+    }
+
+create composer.json on project directory and execute ``composer install``
+
+
+Get timeline
 ----------------------------------------------------
 
     <?php
@@ -36,7 +56,7 @@ Gets your timeline
     ?>
 
 
-Posts status (Tweete)
+Post status (Tweete)
 ----------------------------------------------------
 
     $twitter->postStatusesUpdate(array('status' => 'tweet by php-twient'));

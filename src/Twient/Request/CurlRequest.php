@@ -50,7 +50,7 @@ class CurlRequest extends BaseRequest
         $httpCode = curl_getinfo($ci, CURLINFO_HTTP_CODE);
         curl_close($ci);
 
-        if ($httpCode != 200) {
+        if ($httpCode < 200 || $httpCode >= 300) {
             throw new \Twient\Exception(null, $httpCode, $response);
         }
 
