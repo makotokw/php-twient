@@ -23,4 +23,3 @@ try {
 } catch (Exception $e) {
     echo $e . PHP_EOL;
 }
-

@@ -14,9 +14,6 @@ namespace Twient;
 use Twient\Request\StreamingRequest;
 use Twient\Auth\OAuth;
 
-/**
- * @method array statusesTimeline(array $params)
- */
 class Twitter
 {
     const NAME = 'php-twient';
@@ -72,7 +69,6 @@ class Twitter
             'statuses/update',
             'statuses/retweet/:id',
             'statuses/update_with_media',
-            'statuses/filter',
             'direct_messages/destroy',
             'direct_messages/new',
             'friendships/create',
@@ -102,7 +98,7 @@ class Twitter
             'saved_searches/create',
             'saved_searches/destroy/:id',
             'geo/place',
-            'users/report_spam'
+            'users/report_spam',
         );
 
         $this->streamingApis = array(
@@ -300,9 +296,6 @@ class Twitter
      */
     public function streaming($methodName, array $params = array(), $callback = null)
     {
-        if (!array_key_exists($methodName, $this->streamingApis)) {
-            throw new Exception('This method is not supported: ' . $methodName);
-        }
         $config = array_merge($this->defaultApiOptions, $this->streamingApis[$methodName]);
 
         foreach ($config['required'] as $key) {
