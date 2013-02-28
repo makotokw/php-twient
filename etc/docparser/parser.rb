@@ -28,7 +28,7 @@ doc.css('.views-field-title > a').each do |link|
 EOS
   else
     http = m[0][0].downcase
-    method_name = (http + '_' + method_name).camelize(:lower)
+    method_name = method_name.camelize(:lower)
     puts <<"EOS"
     public function #{method_name}($params = array()) { return $this->#{http}('#{m[0][1]}', $params); }
 EOS
@@ -41,4 +41,4 @@ EOS
 end
 
 #puts "'" + get_methods.join("', '") + "'"
-#puts "'" + post_methods.join("', '") + "'"
+puts "'" + post_methods.join("', '") + "'"

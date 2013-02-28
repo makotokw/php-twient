@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/bootstrap.php';
 
-use Twient\Twitter;
+use Twient\Twitter\V1dot1 as Twitter;
 
 try {
     $twitter = new Twitter();
@@ -12,7 +12,7 @@ try {
         USER_TOKEN,
         USER_SECRET
     );
-    $results = $twitter->getSearchTweets(array('q'=>'Sushi'));
+    $results = $twitter->searchTweets(array('q'=>'Sushi'));
     foreach ($results['statuses'] as $status) {
         echo $status['user']['name'].': ';
         echo $status['text'].PHP_EOL;

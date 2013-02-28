@@ -1,13 +1,14 @@
 php-twient
 ==============
 
-php-twient is a php5.3+ twitter client library and Composer package!
+php-twient is a php5.3+ twitter client library and Composer package.
 
 FEATURES
 ==========
 
  * Composer package
  * Uses namespace for PHP 5.3+
+ * PSR-2 Coding Standard
  * Supports OAuth
  * Supports Streaming APIs
  * Should work with/without php_curl (detects php_curl automatically)
@@ -15,11 +16,14 @@ FEATURES
 Usage
 ============
 
-Install by Composer
+Install by using Composer
 ----------------------------------------------------
 
 Composer: http://getcomposer.org/
 
+create blew composer.json on your project directory and execute ``composer install``
+
+    /path/to/project/composer.json
     {
         "repositories": [
             {
@@ -32,7 +36,7 @@ Composer: http://getcomposer.org/
         }
     }
 
-create composer.json on project directory and execute ``composer install``
+
 
 
 Get timeline
@@ -48,25 +52,25 @@ Get timeline
 
     $twitter = new Twitter();
     $twitter->oAuth($consumer_key, $consumer_secret, $oauth_token, $oauth_token_secret);
-    // getStatusesHomeTimeline or get('statuses/home_timeline');
-    $statuses = $twitter->getStatusesHomeTimeline();
+    $statuses = $twitter->call('statuses/home_timeline');
     foreach ($statuses as $status) {
         echo $status['user']['name'].': '.$status['text'].PHP_EOL;
     }
     ?>
 
 
-Post status (Tweete)
+Post status (Tweet)
 ----------------------------------------------------
 
-    $twitter->postStatusesUpdate(array('status' => 'tweet by php-twient'));
+    $twitter->call('statuses/update', array('status' => 'tweet by php-twient'));
 
 
 Using Streaming API with closure
 ----------------------------------------------------
 
 
-    $twitter->streamingStatusesFilter(
+    $twitter->streaming(
+        'statuses/filter',
         array('track' => 'Sushi,Japan'),
         function ($twitter, $status) {
             static $count = 0;
@@ -76,13 +80,17 @@ Using Streaming API with closure
     );
 
 
+Alternative API
 ----------------------------------------------------
- 
-LIMITATIONS
-===========
 
- * Not supported on PHP5.2 or older
- * No test for statuses/firehose and statuses/retweet due to not have access level
+    use Twient\Twitter\V1dot1 as Twitter;
+
+    $twitter = new Twitter();
+    ...
+    $twitter->statusesHomeTimeline();       // instead of "call('statuses/home_timeline')"
+    $twitter->statusesUpdate(...);          // instead of "call('statuses/update', ...)"
+    $twitter->statusesHomeTimeline(...);    // instead of "streaming('statuses/filter', ...)"
+
 
 HISTORY
 ============
@@ -97,6 +105,7 @@ v0.4
 
  * Updated to Composer package
  * Required PHP5.3+
+ * PSR-2 Coding Standard
 
 
 v0.3.1

@@ -46,13 +46,18 @@ class Twitter
     protected $defaultApiOptions;
 
     /**
+     * @var array
+     */
+    protected $postMethodNames;
+
+    /**
      * Construct
      */
     public function __construct()
     {
-        $this->requestClass = (function_exists(
-            'curl_init'
-        )) ? '\Twient\Request\CurlRequest' : '\Twient\Request\BaseRequest';
+        if (function_exists('curl_init')) {
+            $this->requestClass = '\Twient\Request\CurlRequest';
+        }
 
         $this->defaultApiOptions = array(
             'url' => self::REST_API_URL,
@@ -60,6 +65,44 @@ class Twitter
             '#id' => null,
             'http' => 'get',
             'streaming' => false,
+        );
+
+        $this->postMethodNames = array(
+            'statuses/destroy/:id',
+            'statuses/update',
+            'statuses/retweet/:id',
+            'statuses/update_with_media',
+            'statuses/filter',
+            'direct_messages/destroy',
+            'direct_messages/new',
+            'friendships/create',
+            'friendships/destroy',
+            'friendships/update',
+            'account/settings',
+            'account/update_delivery_device',
+            'account/update_profile',
+            'account/update_profile_background_image',
+            'account/update_profile_colors',
+            'account/update_profile_image',
+            'blocks/create',
+            'blocks/destroy',
+            'account/remove_profile_banner',
+            'account/update_profile_banner',
+            'favorites/destroy',
+            'favorites/create',
+            'lists/members/destroy',
+            'lists/subscribers/create',
+            'lists/subscribers/destroy',
+            'lists/members/create_all',
+            'lists/members/create',
+            'lists/destroy',
+            'lists/update',
+            'lists/create',
+            'lists/members/destroy_all',
+            'saved_searches/create',
+            'saved_searches/destroy/:id',
+            'geo/place',
+            'users/report_spam'
         );
 
         $this->streamingApis = array(
@@ -192,6 +235,24 @@ class Twitter
     /**
      * Calls the REST API Method
      * @param string $methodName
+     * @param array $params
+     * @return array
+     * @throws Exception
+     */
+    public function call($methodName, array $params = array())
+    {
+        $options = array_merge($this->defaultApiOptions, $this->createConfigByMethodName($methodName));
+        if (in_array($methodName, $this->postMethodNames)) {
+            if (!($methodName == 'account/settings' && empty($params))) {
+                $options['http'] = 'post';
+            }
+        }
+        return $this->internalCall($methodName, $options, $params);
+    }
+
+    /**
+     * Calls the REST API Method
+     * @param string $methodName
      * @param array $options
      * @param array $params
      * @return array
@@ -301,487 +362,5 @@ class Twitter
     public function useAssociativeArray($assoc = true)
     {
         $this->assoc = (bool)$assoc;
-    }
-
-    // via API v1.1
-
-    public function getStatusesMentionsTimeline($params = array())
-    {
-        return $this->get('statuses/mentions_timeline', $params);
-    }
-
-    public function getStatusesUserTimeline($params = array())
-    {
-        return $this->get('statuses/user_timeline', $params);
-    }
-
-    public function getStatusesHomeTimeline($params = array())
-    {
-        return $this->get('statuses/home_timeline', $params);
-    }
-
-    public function getStatusesRetweetsOfMe($params = array())
-    {
-        return $this->get('statuses/retweets_of_me', $params);
-    }
-
-    public function getStatusesRetweetsId($params = array())
-    {
-        return $this->get('statuses/retweets/:id', $params);
-    }
-
-    public function getStatusesShowId($params = array())
-    {
-        return $this->get('statuses/show/:id', $params);
-    }
-
-    public function postStatusesDestroyId($params = array())
-    {
-        return $this->post('statuses/destroy/:id', $params);
-    }
-
-    public function postStatusesUpdate($params = array())
-    {
-        return $this->post('statuses/update', $params);
-    }
-
-    public function postStatusesRetweetId($params = array())
-    {
-        return $this->post('statuses/retweet/:id', $params);
-    }
-
-    public function postStatusesUpdateWithMedia($params = array())
-    {
-        return $this->post('statuses/update_with_media', $params);
-    }
-
-    public function getStatusesOembed($params = array())
-    {
-        return $this->get('statuses/oembed', $params);
-    }
-
-    public function getSearchTweets($params = array())
-    {
-        return $this->get('search/tweets', $params);
-    }
-
-    public function streamingStatusesFilter($params = array(), $callback)
-    {
-        return $this->streaming('statuses/filter', $params, $callback);
-    }
-
-    public function streamingStatusesSample($params = array(), $callback)
-    {
-        return $this->streaming('statuses/sample', $params, $callback);
-    }
-
-    public function streamingStatusesFirehose($params = array(), $callback)
-    {
-        return $this->streaming('statuses/firehose', $params, $callback);
-    }
-
-    public function streamingUser($params = array(), $callback)
-    {
-        return $this->streaming('user', $params, $callback);
-    }
-
-    public function streamingSite($params = array(), $callback)
-    {
-        return $this->streaming('site', $params, $callback);
-    }
-
-    public function getDirectMessages($params = array())
-    {
-        return $this->get('direct_messages', $params);
-    }
-
-    public function getDirectMessagesSent($params = array())
-    {
-        return $this->get('direct_messages/sent', $params);
-    }
-
-    public function getDirectMessagesShow($params = array())
-    {
-        return $this->get('direct_messages/show', $params);
-    }
-
-    public function postDirectMessagesDestroy($params = array())
-    {
-        return $this->post('direct_messages/destroy', $params);
-    }
-
-    public function postDirectMessagesNew($params = array())
-    {
-        return $this->post('direct_messages/new', $params);
-    }
-
-    public function getFriendshipsNoRetweetsIds($params = array())
-    {
-        return $this->get('friendships/no_retweets/ids', $params);
-    }
-
-    public function getFriendsIds($params = array())
-    {
-        return $this->get('friends/ids', $params);
-    }
-
-    public function getFollowersIds($params = array())
-    {
-        return $this->get('followers/ids', $params);
-    }
-
-    public function getFriendshipsLookup($params = array())
-    {
-        return $this->get('friendships/lookup', $params);
-    }
-
-    public function getFriendshipsIncoming($params = array())
-    {
-        return $this->get('friendships/incoming', $params);
-    }
-
-    public function getFriendshipsOutgoing($params = array())
-    {
-        return $this->get('friendships/outgoing', $params);
-    }
-
-    public function postFriendshipsCreate($params = array())
-    {
-        return $this->post('friendships/create', $params);
-    }
-
-    public function postFriendshipsDestroy($params = array())
-    {
-        return $this->post('friendships/destroy', $params);
-    }
-
-    public function postFriendshipsUpdate($params = array())
-    {
-        return $this->post('friendships/update', $params);
-    }
-
-    public function getFriendshipsShow($params = array())
-    {
-        return $this->get('friendships/show', $params);
-    }
-
-    public function getFriendsList($params = array())
-    {
-        return $this->get('friends/list', $params);
-    }
-
-    public function getFollowersList($params = array())
-    {
-        return $this->get('followers/list', $params);
-    }
-
-    public function getAccountSettings($params = array())
-    {
-        return $this->get('account/settings', $params);
-    }
-
-    public function getAccountVerifyCredentials($params = array())
-    {
-        return $this->get('account/verify_credentials', $params);
-    }
-
-    public function postAccountSettings($params = array())
-    {
-        return $this->post('account/settings', $params);
-    }
-
-    public function postAccountUpdateDeliveryDevice($params = array())
-    {
-        return $this->post('account/update_delivery_device', $params);
-    }
-
-    public function postAccountUpdateProfile($params = array())
-    {
-        return $this->post('account/update_profile', $params);
-    }
-
-    public function postAccountUpdateProfileBackgroundImage($params = array())
-    {
-        return $this->post('account/update_profile_background_image', $params);
-    }
-
-    public function postAccountUpdateProfileColors($params = array())
-    {
-        return $this->post('account/update_profile_colors', $params);
-    }
-
-    public function postAccountUpdateProfileImage($params = array())
-    {
-        return $this->post('account/update_profile_image', $params);
-    }
-
-    public function getBlocksList($params = array())
-    {
-        return $this->get('blocks/list', $params);
-    }
-
-    public function getBlocksIds($params = array())
-    {
-        return $this->get('blocks/ids', $params);
-    }
-
-    public function postBlocksCreate($params = array())
-    {
-        return $this->post('blocks/create', $params);
-    }
-
-    public function postBlocksDestroy($params = array())
-    {
-        return $this->post('blocks/destroy', $params);
-    }
-
-    public function getUsersLookup($params = array())
-    {
-        return $this->get('users/lookup', $params);
-    }
-
-    public function getUsersShow($params = array())
-    {
-        return $this->get('users/show', $params);
-    }
-
-    public function getUsersSearch($params = array())
-    {
-        return $this->get('users/search', $params);
-    }
-
-    public function getUsersContributees($params = array())
-    {
-        return $this->get('users/contributees', $params);
-    }
-
-    public function getUsersContributors($params = array())
-    {
-        return $this->get('users/contributors', $params);
-    }
-
-    public function postAccountRemoveProfileBanner($params = array())
-    {
-        return $this->post('account/remove_profile_banner', $params);
-    }
-
-    public function postAccountUpdateProfileBanner($params = array())
-    {
-        return $this->post('account/update_profile_banner', $params);
-    }
-
-    public function getUsersProfileBanner($params = array())
-    {
-        return $this->get('users/profile_banner', $params);
-    }
-
-    public function getUsersSuggestionsSlug($params = array())
-    {
-        return $this->get('users/suggestions/:slug', $params);
-    }
-
-    public function getUsersSuggestions($params = array())
-    {
-        return $this->get('users/suggestions', $params);
-    }
-
-    public function getUsersSuggestionsSlugMembers($params = array())
-    {
-        return $this->get('users/suggestions/:slug/members', $params);
-    }
-
-    public function getFavoritesList($params = array())
-    {
-        return $this->get('favorites/list', $params);
-    }
-
-    public function postFavoritesDestroy($params = array())
-    {
-        return $this->post('favorites/destroy', $params);
-    }
-
-    public function postFavoritesCreate($params = array())
-    {
-        return $this->post('favorites/create', $params);
-    }
-
-    public function getListsList($params = array())
-    {
-        return $this->get('lists/list', $params);
-    }
-
-    public function getListsStatuses($params = array())
-    {
-        return $this->get('lists/statuses', $params);
-    }
-
-    public function postListsMembersDestroy($params = array())
-    {
-        return $this->post('lists/members/destroy', $params);
-    }
-
-    public function getListsMemberships($params = array())
-    {
-        return $this->get('lists/memberships', $params);
-    }
-
-    public function getListsSubscribers($params = array())
-    {
-        return $this->get('lists/subscribers', $params);
-    }
-
-    public function postListsSubscribersCreate($params = array())
-    {
-        return $this->post('lists/subscribers/create', $params);
-    }
-
-    public function getListsSubscribersShow($params = array())
-    {
-        return $this->get('lists/subscribers/show', $params);
-    }
-
-    public function postListsSubscribersDestroy($params = array())
-    {
-        return $this->post('lists/subscribers/destroy', $params);
-    }
-
-    public function postListsMembersCreateAll($params = array())
-    {
-        return $this->post('lists/members/create_all', $params);
-    }
-
-    public function getListsMembersShow($params = array())
-    {
-        return $this->get('lists/members/show', $params);
-    }
-
-    public function getListsMembers($params = array())
-    {
-        return $this->get('lists/members', $params);
-    }
-
-    public function postListsMembersCreate($params = array())
-    {
-        return $this->post('lists/members/create', $params);
-    }
-
-    public function postListsDestroy($params = array())
-    {
-        return $this->post('lists/destroy', $params);
-    }
-
-    public function postListsUpdate($params = array())
-    {
-        return $this->post('lists/update', $params);
-    }
-
-    public function postListsCreate($params = array())
-    {
-        return $this->post('lists/create', $params);
-    }
-
-    public function getListsShow($params = array())
-    {
-        return $this->get('lists/show', $params);
-    }
-
-    public function getListsSubscriptions($params = array())
-    {
-        return $this->get('lists/subscriptions', $params);
-    }
-
-    public function postListsMembersDestroyAll($params = array())
-    {
-        return $this->post('lists/members/destroy_all', $params);
-    }
-
-    public function getSavedSearchesList($params = array())
-    {
-        return $this->get('saved_searches/list', $params);
-    }
-
-    public function getSavedSearchesShowId($params = array())
-    {
-        return $this->get('saved_searches/show/:id', $params);
-    }
-
-    public function postSavedSearchesCreate($params = array())
-    {
-        return $this->post('saved_searches/create', $params);
-    }
-
-    public function postSavedSearchesDestroyId($params = array())
-    {
-        return $this->post('saved_searches/destroy/:id', $params);
-    }
-
-    public function getGeoIdPlaceId($params = array())
-    {
-        return $this->get('geo/id/:place_id', $params);
-    }
-
-    public function getGeoReverseGeocode($params = array())
-    {
-        return $this->get('geo/reverse_geocode', $params);
-    }
-
-    public function getGeoSearch($params = array())
-    {
-        return $this->get('geo/search', $params);
-    }
-
-    public function getGeoSimilarPlaces($params = array())
-    {
-        return $this->get('geo/similar_places', $params);
-    }
-
-    public function postGeoPlace($params = array())
-    {
-        return $this->post('geo/place', $params);
-    }
-
-    public function getTrendsPlace($params = array())
-    {
-        return $this->get('trends/place', $params);
-    }
-
-    public function getTrendsAvailable($params = array())
-    {
-        return $this->get('trends/available', $params);
-    }
-
-    public function getTrendsClosest($params = array())
-    {
-        return $this->get('trends/closest', $params);
-    }
-
-    public function postUsersReportSpam($params = array())
-    {
-        return $this->post('users/report_spam', $params);
-    }
-
-    public function getHelpConfiguration($params = array())
-    {
-        return $this->get('help/configuration', $params);
-    }
-
-    public function getHelpLanguages($params = array())
-    {
-        return $this->get('help/languages', $params);
-    }
-
-    public function getHelpPrivacy($params = array())
-    {
-        return $this->get('help/privacy', $params);
-    }
-
-    public function getHelpTos($params = array())
-    {
-        return $this->get('help/tos', $params);
-    }
-
-    public function getApplicationRateLimitStatus($params = array())
-    {
-        return $this->get('application/rate_limit_status', $params);
     }
 }

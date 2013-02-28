@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/bootstrap.php';
 
-use Twient\Twitter;
+use Twient\Twitter\V1dot1 as Twitter;
 
 try {
     $twitter = new Twitter();
@@ -24,7 +24,7 @@ try {
     if (empty($status)) {
         exit;
     }
-    $twitter->postStatusesUpdate(array('status' => $status));
+    $twitter->statusesUpdate(array('status' => $status));
 } catch (Exception $e) {
     echo $e . PHP_EOL;
 }
