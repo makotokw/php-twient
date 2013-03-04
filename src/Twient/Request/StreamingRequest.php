@@ -11,6 +11,11 @@ namespace Twient\Request;
 
 class StreamingRequest extends BaseRequest
 {
+    /**
+     * @param $stream
+     * @param $callback
+     * @return int
+     */
     protected function doStreaming($stream, $callback)
     {
         $count = 0;

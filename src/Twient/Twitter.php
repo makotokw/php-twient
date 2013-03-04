@@ -147,6 +147,7 @@ class Twitter
      * @param string $username    e-mail or account for twitter
      * @param string $password    password for twitter
      * @return Auth\BasicAuth
+     * @deprecated Basic Auth is not longer supported
      */
     public function basicAuth($username, $password)
     {
@@ -290,11 +291,11 @@ class Twitter
      * Calls the Streaming API Method
      * @param string $methodName        method name (ie. statuses/sample)
      * @param array $params             key-value parameter for method
-     * @param mixed $callback           callback function (ie. "function_name" or array(class, "method_name") or closure)
+     * @param callable $callback           callback function (ie. "function_name" or array(class, "method_name") or closure)
      * @return mixed
      * @throws Exception
      */
-    public function streaming($methodName, array $params = array(), $callback = null)
+    public function streaming($methodName, array $params, callable $callback)
     {
         $config = array_merge($this->defaultApiOptions, $this->streamingApis[$methodName]);
 

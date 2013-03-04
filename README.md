@@ -68,6 +68,7 @@ Post status (Tweet)
 Using Streaming API with closure
 ----------------------------------------------------
 
+The streaming method is terminated when callback returns false.
 
     $twitter->streaming(
         'statuses/filter',
@@ -89,7 +90,7 @@ Alternative API
     ...
     $twitter->statusesHomeTimeline();       // instead of "call('statuses/home_timeline')"
     $twitter->statusesUpdate(...);          // instead of "call('statuses/update', ...)"
-    $twitter->statusesHomeTimeline(...);    // instead of "streaming('statuses/filter', ...)"
+    $twitter->streamingStatusesFilter(...);    // instead of "streaming('statuses/filter', ...)"
 
 
 HISTORY
