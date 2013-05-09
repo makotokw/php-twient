@@ -124,6 +124,16 @@ class V1dot1 extends \Twient\Twitter
     /**
      * @param array $params
      * @return array
+     * @see https://dev.twitter.com/docs/api/1.1/get/statuses/retweeters/ids
+     */
+    public function statusesRetweetersIds($params = array())
+    {
+        return $this->get('statuses/retweeters/ids', $params);
+    }
+
+    /**
+     * @param array $params
+     * @return array
      * @see https://dev.twitter.com/docs/api/1.1/get/search/tweets
      */
     public function searchTweets($params = array())
@@ -789,6 +799,16 @@ class V1dot1 extends \Twient\Twitter
     public function listsMembersDestroyAll($params = array())
     {
         return $this->post('lists/members/destroy_all', $params);
+    }
+
+    /**
+     * @param array $params
+     * @return array
+     * @see https://dev.twitter.com/docs/api/1.1/get/lists/ownerships
+     */
+    public function listsOwnerships($params = array())
+    {
+        return $this->get('lists/ownerships', $params);
     }
 
     /**

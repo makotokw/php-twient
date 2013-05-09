@@ -25,18 +25,10 @@ create blew composer.json on your project directory and execute ``composer insta
 
     /path/to/project/composer.json
     {
-        "repositories": [
-            {
-                "type": "vcs",
-                "url": "https://github.com/makotokw/php-twient"
-            }
-        ],
         "require": {
             "makotokw/twient": "dev-master"
         }
     }
-
-
 
 
 Get timeline
