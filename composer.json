@@ -1,6 +1,7 @@
 {
     "name" : "makotokw/twient",
     "description": "Twitter Client for PHP 5.3+",
+    "keywords": ["twitter", "api"],
     "homepage": "http://github.com/makotokw/php-twient",
     "type": "library",
     "license": "MIT",
