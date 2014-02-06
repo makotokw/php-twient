@@ -54,6 +54,7 @@ class StreamingRequest extends BaseRequest
         $opt = array(
             'http' => array(
                 'method' => 'GET',
+                'protocol_version' => 1.1,
                 'header' => implode("\r\n", $headers),
             )
         );
@@ -92,6 +93,7 @@ class StreamingRequest extends BaseRequest
         $opt = array(
             'http' => array(
                 'method' => $method,
+                'protocol_version' => 1.1,
                 'header' => implode("\r\n", $headers),
                 'content' => $content
             )
