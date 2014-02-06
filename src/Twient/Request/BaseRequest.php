@@ -207,11 +207,11 @@ class BaseRequest
     /**
      * @param $url
      * @param array $params
-     * @param bool $auth
+     * @param \Twient\Auth\AuthInterface $auth
      * @param null $callback
      * @return mixed
      */
-    public function getJSON($url, array $params = array(), $auth = false, $callback = null)
+    public function getJSON($url, array $params = array(), $auth = null, $callback = null)
     {
         return json_decode($this->get($url, $params, $auth), $this->assoc);
     }
@@ -219,11 +219,11 @@ class BaseRequest
     /**
      * @param $url
      * @param array $params
-     * @param bool $auth
+     * @param \Twient\Auth\AuthInterface $auth
      * @param null $callback
      * @return mixed
      */
-    public function postJSON($url, array $params = array(), $auth = false, $callback = null)
+    public function postJSON($url, array $params = array(), $auth = null, $callback = null)
     {
         return json_decode($this->post($url, $params, $auth), $this->assoc);
     }

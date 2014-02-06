@@ -147,7 +147,7 @@ class V1dot1 extends \Twient\Twitter
      * @return array
      * @see https://dev.twitter.com/docs/api/1.1/post/statuses/filter
      */
-    public function streamingStatusesFilter($params = array(), $callback)
+    public function streamingStatusesFilter($params = array(), $callback = null)
     {
         return $this->streaming('statuses/filter', $params, $callback);
     }
@@ -158,7 +158,7 @@ class V1dot1 extends \Twient\Twitter
      * @return array
      * @see https://dev.twitter.com/docs/api/1.1/get/statuses/sample
      */
-    public function streamingStatusesSample($params = array(), $callback)
+    public function streamingStatusesSample($params = array(), $callback = null)
     {
         return $this->streaming('statuses/sample', $params, $callback);
     }
@@ -169,7 +169,7 @@ class V1dot1 extends \Twient\Twitter
      * @return array
      * @see https://dev.twitter.com/docs/api/1.1/get/statuses/firehose
      */
-    public function streamingStatusesFirehose($params = array(), $callback)
+    public function streamingStatusesFirehose($params = array(), $callback = null)
     {
         return $this->streaming('statuses/firehose', $params, $callback);
     }
@@ -180,7 +180,7 @@ class V1dot1 extends \Twient\Twitter
      * @return array
      * @see https://dev.twitter.com/docs/api/1.1/get/user
      */
-    public function streamingUser($params = array(), $callback)
+    public function streamingUser($params = array(), $callback = null)
     {
         return $this->streaming('user', $params, $callback);
     }
@@ -191,7 +191,7 @@ class V1dot1 extends \Twient\Twitter
      * @return array
      * @see https://dev.twitter.com/docs/api/1.1/get/site
      */
-    public function streamingSite($params = array(), $callback)
+    public function streamingSite($params = array(), $callback = null)
     {
         return $this->streaming('site', $params, $callback);
     }
