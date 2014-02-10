@@ -88,6 +88,11 @@ Alternative API
 HISTORY
 ============
 
+v0.5.1
+----------------
+
+ * Used https scheme for Streaming API
+
 v0.5
 ----------------
 
