@@ -1,5 +1,5 @@
 vendor/
 .idea/
-composer.lock
 phpunit.xml
+cache.properties
 .DS_Store
