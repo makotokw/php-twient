@@ -1,6 +1,6 @@
 <?php
 /**
- * Twient\Twitter\V1dot1 class
+ * Twitter\V1dot1 class
  * This file is part of the makotokw\Twient package.
  *
  * @author     Makoto Kawasaki <makoto.kw@gmail.com>
@@ -100,8 +100,9 @@ class V1dot1 extends Client
      * statuses/show/:id
      *
      * Returns a single Tweet, specified by the id parameter. The Tweet's author will also
-     * be embedded within the tweet. See Embeddable Timelines, Embeddable Tweets, and GET
-     * statuses/oembed for tools to render Tweets according to Display Requirements.
+     * be embedded within the tweet. See GET statuses/lookup for getting Tweets in bulk
+     * (up to 100 per call). See also Embeddable Timelines, Embeddable Tweets, and GET statuses/oembed
+     * for tools to render Tweets according...
      *
      * @param array $params
      * @return array
@@ -345,8 +346,8 @@ class V1dot1 extends Client
      * direct_messages/show
      *
      * Returns a single direct message, specified by an id parameter. Like the /1.1/direct_messages.format
-     * request, this method will include the user objects of the sender and recipient.
-     * Important: This method requires an access token with RWD (read, write...
+     * request, this method will include the user objects of the sender and recipient. Important:
+     * This method requires an access token with RWD (read, write...
      *
      * @param array $params
      * @return array
@@ -571,7 +572,7 @@ class V1dot1 extends Client
      *
      * Returns the relationships of the authenticating user to the comma-separated list
      * of up to 100 screen_names or user_ids provided. Values for connections can be: following,
-     * following_requested, followed_by, none, blocking.
+     * following_requested, followed_by, none, blocking, muting.
      *
      * @param array $params
      * @return array
@@ -887,6 +888,68 @@ class V1dot1 extends Client
     public function usersProfileBanner($params = array())
     {
         return $this->get('users/profile_banner', $params);
+    }
+
+    /**
+     * mutes/users/create
+     *
+     * Mutes the user specified in the ID parameter for the authenticating user. Returns
+     * the muted user in the requested format when successful. Returns a string describing
+     * the failure condition when unsuccessful. Actions taken in this method are asynchronous
+     * and changes will be eventually consistent.
+     *
+     * @param array $params
+     * @return array
+     * @see https://dev.twitter.com/docs/api/1.1/post/mutes/users/create
+     */
+    public function mutesUsersCreate($params = array())
+    {
+        return $this->post('mutes/users/create', $params);
+    }
+
+    /**
+     * mutes/users/destroy
+     *
+     * Un-mutes the user specified in the ID parameter for the authenticating user. Returns
+     * the unmuted user in the requested format when successful. Returns a string describing
+     * the failure condition when unsuccessful. Actions taken in this method are asynchronous
+     * and changes will be eventually...
+     *
+     * @param array $params
+     * @return array
+     * @see https://dev.twitter.com/docs/api/1.1/post/mutes/users/destroy
+     */
+    public function mutesUsersDestroy($params = array())
+    {
+        return $this->post('mutes/users/destroy', $params);
+    }
+
+    /**
+     * mutes/users/ids
+     *
+     * Returns an array of numeric user ids the authenticating user has muted.
+     *
+     * @param array $params
+     * @return array
+     * @see https://dev.twitter.com/docs/api/1.1/get/mutes/users/ids
+     */
+    public function mutesUsersIds($params = array())
+    {
+        return $this->get('mutes/users/ids', $params);
+    }
+
+    /**
+     * mutes/users/list
+     *
+     * Returns an array of user objects the authenticating user has muted.
+     *
+     * @param array $params
+     * @return array
+     * @see https://dev.twitter.com/docs/api/1.1/get/mutes/users/list
+     */
+    public function mutesUsersList($params = array())
+    {
+        return $this->get('mutes/users/list', $params);
     }
 
     /**
@@ -1552,5 +1615,22 @@ class V1dot1 extends Client
     public function applicationRateLimitStatus($params = array())
     {
         return $this->get('application/rate_limit_status', $params);
+    }
+
+    /**
+     * statuses/lookup
+     *
+     * Returns fully-hydrated  tweet objects for up to 100 tweets per request, as specified
+     * by comma-separated values passed to the id parameter. This method is especially useful
+     * to get the details (hydrate) a collection of Tweet IDs. GET statuses/show/:id is
+     * used to retrieve a single tweet object.
+     *
+     * @param array $params
+     * @return array
+     * @see https://dev.twitter.com/docs/api/1.1/get/statuses/lookup
+     */
+    public function statusesLookup($params = array())
+    {
+        return $this->get('statuses/lookup', $params);
     }
 }
