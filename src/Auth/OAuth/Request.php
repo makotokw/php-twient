@@ -1,8 +1,8 @@
 <?php
 
-namespace Twient\Auth\OAuth;
+namespace makotokw\Twient\Auth\OAuth;
 
-use Twient\Exception;
+use makotokw\Twient\Exception;
 
 class Request
 {

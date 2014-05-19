@@ -1,13 +1,13 @@
 <?php
 /**
- * Twient\Auth\OAuth class
- * This file is part of the Twient package.
+ * Auth\OAuth class
+ * This file is part of the makotokw\Twient package.
  *
- * @author     makoto_kw <makoto.kw@gmail.com>
+ * @author     Makoto Kawasaki <makoto.kw@gmail.com>
  * @license    The MIT License
  */
 
-namespace Twient\Auth;
+namespace makotokw\Twient\Auth;
 
 class OAuth implements AuthInterface
 {
@@ -21,10 +21,10 @@ class OAuth implements AuthInterface
 
     public function __construct($consumerKey, $consumerSecret, $oauthToken = null, $oauthTokenSecret = null)
     {
-        $this->signatureMethod = new \Twient\Auth\OAuth\HMACSHA1SignatureMethod();
-        $this->consumer = new \Twient\Auth\OAuth\Consumer($consumerKey, $consumerSecret);
+        $this->signatureMethod = new OAuth\HMACSHA1SignatureMethod();
+        $this->consumer = new OAuth\Consumer($consumerKey, $consumerSecret);
         if (!empty($oauthToken) && !empty($oauthTokenSecret)) {
-            $this->token = new \Twient\Auth\OAuth\Consumer($oauthToken, $oauthTokenSecret);
+            $this->token = new OAuth\Consumer($oauthToken, $oauthTokenSecret);
         }
     }
 
@@ -35,8 +35,8 @@ class OAuth implements AuthInterface
             $params['oauth_callback'] = $callback;
         }
         $response = $this->doRequest($this->requestTokenUrl, 'GET', $params);
-        $token = \Twient\Auth\OAuth\Util::parseParameters($response);
-        $this->token = new \Twient\Auth\OAuth\Consumer($token['oauth_token'], $token['oauth_token_secret']);
+        $token = OAuth\Util::parseParameters($response);
+        $this->token = new OAuth\Consumer($token['oauth_token'], $token['oauth_token_secret']);
         return $token;
     }
 
@@ -55,8 +55,8 @@ class OAuth implements AuthInterface
             $params['oauth_verifier'] = $verifier;
         }
         $response = $this->doRequest($this->accessTokenUrl, 'GET', $params);
-        $token = \Twient\Auth\OAuth\Util::parseParameters($response);
-        $this->token = new \Twient\Auth\OAuth\Consumer($token['oauth_token'], $token['oauth_token_secret']);
+        $token = OAuth\Util::parseParameters($response);
+        $this->token = new OAuth\Consumer($token['oauth_token'], $token['oauth_token_secret']);
         return $token;
     }
 
@@ -65,7 +65,7 @@ class OAuth implements AuthInterface
         $signedData = $data;
         $signedData['headers'] = array();
 
-        $req = \Twient\Auth\OAuth\Request::fromConsumerAndToken(
+        $req = OAuth\Request::fromConsumerAndToken(
             $this->consumer,
             $this->token,
             strtoupper($data['method']),
@@ -90,7 +90,7 @@ class OAuth implements AuthInterface
 
     private function doRequest($url, $method, $params)
     {
-        $request = \Twient\Auth\OAuth\Request::fromConsumerAndToken(
+        $request = OAuth\Request::fromConsumerAndToken(
             $this->consumer,
             $this->token,
             $method,
@@ -99,7 +99,7 @@ class OAuth implements AuthInterface
         );
         $request->signRequest($this->signatureMethod, $this->consumer, $this->token);
 
-        $http = new \Twient\Request\BaseRequest();
+        $http = new \makotokw\Twient\Request\BaseRequest();
         $method = strtolower($method);
         switch ($method) {
             case 'get':

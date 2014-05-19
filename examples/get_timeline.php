@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/bootstrap.php';
 
-use Twient\Twitter\V1dot1 as Twitter;
+use makotokw\Twient\Twitter\V1dot1 as Twitter;
 
 try {
     $twitter = new Twitter();

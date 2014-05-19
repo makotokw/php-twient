@@ -1,13 +1,13 @@
 <?php
 /**
- * Twient\Auth\BasicAuth class
- * This file is part of the Twient package.
+ * Auth\BasicAuth class
+ * This file is part of the makotokw\Twient package.
  *
- * @author     makoto_kw <makoto.kw@gmail.com>
+ * @author     Makoto Kawasaki <makoto.kw@gmail.com>
  * @license    The MIT License
  */
 
-namespace Twient\Auth;
+namespace makotokw\Twient\Auth;
 
 class BasicAuth implements AuthInterface
 {

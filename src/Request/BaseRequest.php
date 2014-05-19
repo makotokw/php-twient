@@ -1,15 +1,16 @@
 <?php
 /**
  * Twient\Request\BaseRequest class
- * This file is part of the Twient package.
+ * This file is part of the makotokw\Twient package.
  *
- * @author     makoto_kw <makoto.kw@gmail.com>
+ * @author     Makoto Kawasaki <makoto.kw@gmail.com>
  * @license    The MIT License
  */
 
-namespace Twient\Request;
+namespace makotokw\Twient\Request;
 
-use Twient\Twitter;
+use makotokw\Twient\Twitter;
+use makotokw\Twient\Exception as TwientException;
 
 class BaseRequest
 {
@@ -100,7 +101,7 @@ class BaseRequest
     /**
      * @param $url
      * @param array $params
-     * @param \Twient\Auth\AuthInterface $auth
+     * @param \makotokw\Twient\Auth\AuthInterface $auth
      * @return string
      */
     public function get($url, array $params = array(), $auth = null)
@@ -125,7 +126,7 @@ class BaseRequest
     /**
      * @param $url
      * @param array $params
-     * @param \Twient\Auth\AuthInterface $auth
+     * @param \makotokw\Twient\Auth\AuthInterface $auth
      * @return string
      */
     public function post($url, array $params = array(), $auth = null)
@@ -152,7 +153,7 @@ class BaseRequest
      * @param array $headers
      * @param null $postData
      * @return string
-     * @throws \Twient\Exception
+     * @throws \makotokw\Twient\Exception
      */
     protected function doRequest($url, $method, $headers = array(), $postData = null)
     {
@@ -194,7 +195,7 @@ class BaseRequest
                     list ($version, $statusCode, $msg) = explode(' ', $header, 3);
                     if ($statusCode < 200 || $statusCode >= 300) {
                         $msg .= ',url=' . $url;
-                        throw new \Twient\Exception($msg, $statusCode, $contents);
+                        throw new TwientException($msg, $statusCode, $contents);
                     }
                     // success
                     break;
@@ -207,7 +208,7 @@ class BaseRequest
     /**
      * @param $url
      * @param array $params
-     * @param \Twient\Auth\AuthInterface $auth
+     * @param \makotokw\Twient\Auth\AuthInterface $auth
      * @param null $callback
      * @return mixed
      */
@@ -219,7 +220,7 @@ class BaseRequest
     /**
      * @param $url
      * @param array $params
-     * @param \Twient\Auth\AuthInterface $auth
+     * @param \makotokw\Twient\Auth\AuthInterface $auth
      * @param null $callback
      * @return mixed
      */

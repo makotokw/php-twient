@@ -1,6 +1,6 @@
 <?php
 
-namespace Twient;
+namespace makotokw\Twient;
 
 class TinyUrlTest extends \PHPUnit_Framework_TestCase
 {

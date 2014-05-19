@@ -1,20 +1,22 @@
 <?php
 /**
  * Twient\Request\CurlRequest class
- * This file is part of the Twient package.
+ * This file is part of the makotokw\Twient package.
  *
- * @author     makoto_kw <makoto.kw@gmail.com>
+ * @author     Makoto Kawasaki <makoto.kw@gmail.com>
  * @license    The MIT License
  */
 
-namespace Twient\Request;
+namespace makotokw\Twient\Request;
+
+use makotokw\Twient\Exception as TwientException;
 
 class CurlRequest extends BaseRequest
 {
     protected function doRequest($url, $method, $headers = array(), $postData = null)
     {
         if (!function_exists('curl_init')) {
-            throw new \Twient\Exception('php_curl is not found');
+            throw new TwientException('php_curl is not found');
         }
 
         $ci = curl_init();
@@ -51,7 +53,7 @@ class CurlRequest extends BaseRequest
         curl_close($ci);
 
         if ($httpCode < 200 || $httpCode >= 300) {
-            throw new \Twient\Exception(null, $httpCode, $response);
+            throw new TwientException(null, $httpCode, $response);
         }
 
         return $response;

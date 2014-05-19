@@ -1,13 +1,13 @@
 <?php
 /**
- * Twient\TinyUrl class
- * This file is part of the Twient package.
+ * TinyUrl class
+ * This file is part of the makotokw\Twient package.
  *
- * @author     makoto_kw <makoto.kw@gmail.com>
+ * @author     Makoto Kawasaki <makoto.kw@gmail.com>
  * @license    The MIT License
  */
 
-namespace Twient;
+namespace makotokw\Twient;
 
 class TinyUrl
 {
@@ -20,7 +20,7 @@ class TinyUrl
      */
     public static function create($url)
     {
-        $request = new \Twient\Request\BaseRequest();
+        $request = new \makotokw\Twient\Request\BaseRequest();
         return $request->get(self::URL, array('url' => $url));
     }
 }

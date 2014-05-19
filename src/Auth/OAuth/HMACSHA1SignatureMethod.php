@@ -1,6 +1,6 @@
 <?php
 
-namespace Twient\Auth\OAuth;
+namespace makotokw\Twient\Auth\OAuth;
 
 class HMACSHA1SignatureMethod extends SignatureMethod
 {

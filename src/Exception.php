@@ -1,13 +1,13 @@
 <?php
 /**
- * Twient\Exception class
- * This file is part of the Twient package.
+ * Exception class
+ * This file is part of the makotokw\Twient package.
  *
- * @author     makoto_kw <makoto.kw@gmail.com>
+ * @author     Makoto Kawasaki <makoto.kw@gmail.com>
  * @license    The MIT License
  */
 
-namespace Twient;
+namespace makotokw\Twient;
 
 class Exception extends \Exception
 {
