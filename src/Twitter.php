@@ -289,9 +289,9 @@ class Twitter
 
     /**
      * Calls the Streaming API Method
-     * @param string $methodName        method name (ie. statuses/sample)
-     * @param array $params             key-value parameter for method
-     * @param callable $callback           callback function (ie. "function_name" or array(class, "method_name") or closure)
+     * @param string $methodName method name (ie. statuses/sample)
+     * @param array $params key-value parameter for method
+     * @param callable $callback callback function (ie. "function_name" or array(class, "method_name") or closure)
      * @return mixed
      * @throws Exception
      */
