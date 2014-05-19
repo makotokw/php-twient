@@ -7,10 +7,8 @@ FEATURES
 ==========
 
  * Composer package
- * Uses namespace for PHP 5.3+
- * PSR-2 Coding Standard
- * Supports OAuth
- * Supports Streaming APIs
+ * Use namespace for PHP 5.3+
+ * Support Twitter API v1.1
  * Should work with/without php_curl (detects php_curl automatically)
 
 Usage
@@ -35,7 +33,7 @@ Get timeline
 ----------------------------------------------------
 
     <?php
-    use Twient\Twitter;
+    use makotokw\Twient\Twitter;
 
     $consumer_key = 'consumer key for your application';
     $consumer_secret = 'consumer secret for your application';
@@ -76,7 +74,7 @@ The streaming method is terminated when callback returns false.
 Alternative API
 ----------------------------------------------------
 
-    use Twient\Twitter\V1dot1 as Twitter;
+    use makotokw\Twient\Twitter\V1dot1 as Twitter;
 
     $twitter = new Twitter();
     ...
@@ -87,6 +85,13 @@ Alternative API
 
 HISTORY
 ============
+
+
+v0.6
+----------------
+
+ * Added vendor namespace ``makotokw\Twient``
+ * PSR-4 Auto Loading
 
 v0.5.1
 ----------------

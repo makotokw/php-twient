@@ -4,7 +4,7 @@
  * This file is part of the makotokw\Twient package.
  *
  * @author      Makoto Kawasaki <makoto.kw@gmail.com>
- * @version     0.5.1
+ * @version     0.6
  * @license     The MIT License
  * @link        http://github.com/makotokw/php-twient
  */
@@ -17,7 +17,7 @@ use makotokw\Twient\Auth\OAuth;
 class Twitter
 {
     const NAME = 'php-twient';
-    const VERSION = '0.5.1';
+    const VERSION = '0.6';
     const URL = 'http://twitter.com';
 
     const REST_API_URL = 'https://api.twitter.com/1.1';
