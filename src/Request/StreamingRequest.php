@@ -1,13 +1,13 @@
 <?php
 /**
  * Request\StreamingRequest class
- * This file is part of the makotokw\Twient package.
+ * This file is part of the Makotokw\Twient package.
  *
  * @author     Makoto Kawasaki <makoto.kw@gmail.com>
  * @license    The MIT License
  */
 
-namespace makotokw\Twient\Request;
+namespace Makotokw\Twient\Request;
 
 class StreamingRequest extends BaseRequest
 {
@@ -35,7 +35,7 @@ class StreamingRequest extends BaseRequest
     /**
      * @param $url
      * @param array $params
-     * @param \makotokw\Twient\Auth\AuthInterface $auth
+     * @param \Makotokw\Twient\Auth\AuthInterface $auth
      * @param $callback
      * @return int|mixed
      */
@@ -64,7 +64,7 @@ class StreamingRequest extends BaseRequest
     /**
      * @param $url
      * @param array $params
-     * @param \makotokw\Twient\Auth\AuthInterface $auth
+     * @param \Makotokw\Twient\Auth\AuthInterface $auth
      * @param null $callback
      * @return int|mixed
      */

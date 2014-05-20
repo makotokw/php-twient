@@ -1,8 +1,8 @@
 <?php
 
-namespace makotokw\Twient\Auth\OAuth;
+namespace Makotokw\Twient\Auth\OAuth;
 
-use makotokw\Twient\Exception;
+use Makotokw\Twient\Exception;
 
 class RSASHA1SignatureMethod extends SignatureMethod
 {
@@ -13,7 +13,7 @@ class RSASHA1SignatureMethod extends SignatureMethod
 
     /**
      * @param Request $request
-     * @throws \Twient\Exception
+     * @throws \Makotokw\Twient\Exception
      */
     protected function fetchPublicCert($request)
     {
@@ -28,7 +28,7 @@ class RSASHA1SignatureMethod extends SignatureMethod
 
     /**
      * @param Request $request
-     * @throws \Twient\Exception
+     * @throws \Makotokw\Twient\Exception
      */
     protected function fetchPrivateCert($request)
     {

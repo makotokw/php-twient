@@ -1,8 +1,8 @@
 <?php
 
-namespace makotokw\Twient\Auth\OAuth;
+namespace Makotokw\Twient\Auth\OAuth;
 
-use makotokw\Twient\Exception;
+use Makotokw\Twient\Exception;
 
 class Request
 {
@@ -250,7 +250,7 @@ class Request
     /**
      * builds the Authorization: header
      * @return string
-     * @throws \Twient\Exception
+     * @throws \Makotokw\Twient\Exception
      */
     public function toHeader()
     {

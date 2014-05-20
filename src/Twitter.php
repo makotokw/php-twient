@@ -1,7 +1,7 @@
 <?php
 /**
  * Twitter class
- * This file is part of the makotokw\Twient package.
+ * This file is part of the Makotokw\Twient package.
  *
  * @author      Makoto Kawasaki <makoto.kw@gmail.com>
  * @version     0.6
@@ -9,10 +9,10 @@
  * @link        http://github.com/makotokw/php-twient
  */
 
-namespace makotokw\Twient;
+namespace Makotokw\Twient;
 
-use makotokw\Twient\Request\StreamingRequest;
-use makotokw\Twient\Auth\OAuth;
+use Makotokw\Twient\Request\StreamingRequest;
+use Makotokw\Twient\Auth\OAuth;
 
 class Twitter
 {
@@ -28,7 +28,7 @@ class Twitter
     protected $userAgent = null;
     protected $request = null;
     protected $auth = null;
-    protected $requestClass = '\makotokw\Twient\Request\BaseRequest';
+    protected $requestClass = '\Makotokw\Twient\Request\BaseRequest';
     protected $assoc = true;
 
     /**
@@ -53,7 +53,7 @@ class Twitter
     public function __construct()
     {
         if (function_exists('curl_init')) {
-            $this->requestClass = '\makotokw\Twient\Request\CurlRequest';
+            $this->requestClass = '\Makotokw\Twient\Request\CurlRequest';
         }
 
         $this->defaultApiOptions = array(
@@ -114,8 +114,8 @@ class Twitter
 
     /**
      * create Twitter Request object
-     * @param string $className '\makotokw\Twient\Request\BaseRequest' or '\makotokw\Twient\Request\CurlRequest'
-     * @return \makotokw\Twient\Request\BaseRequest
+     * @param string $className '\Makotokw\Twient\Request\BaseRequest' or '\Makotokw\Twient\Request\CurlRequest'
+     * @return \Makotokw\Twient\Request\BaseRequest
      */
     public function createRequest($className = null)
     {
@@ -124,7 +124,7 @@ class Twitter
 
     /**
      * Sets a request class name
-     * @param string $className     '\makotokw\Twient\Request\BaseRequest' or '\makotokw\Twient\Request\CurlRequest'
+     * @param string $className     '\Makotokw\Twient\Request\BaseRequest' or '\Makotokw\Twient\Request\CurlRequest'
      */
     public function setRequestClass($className)
     {
@@ -151,7 +151,7 @@ class Twitter
      */
     public function basicAuth($username, $password)
     {
-        $this->auth = new \makotokw\Twient\Auth\BasicAuth($username, $password);
+        $this->auth = new \Makotokw\Twient\Auth\BasicAuth($username, $password);
         return $this->auth;
     }
 
@@ -161,7 +161,7 @@ class Twitter
      * @param string $consumerSecret
      * @param string $oauthToken
      * @param string $oauthTokenSecret
-     * @return \makotokw\Twient\Auth\OAuth
+     * @return \Makotokw\Twient\Auth\OAuth
      */
     public function oAuth($consumerKey, $consumerSecret, $oauthToken = null, $oauthTokenSecret = null)
     {
@@ -171,7 +171,7 @@ class Twitter
 
     /**
      * Sets an auth
-     * @param \makotokw\Twient\Auth\AuthInterface $auth
+     * @param \Makotokw\Twient\Auth\AuthInterface $auth
      */
     public function setAuth($auth)
     {
@@ -180,7 +180,7 @@ class Twitter
 
     /**
      * Gets an auth
-     * @return \makotokw\Twient\Auth\AuthInterface
+     * @return \Makotokw\Twient\Auth\AuthInterface
      */
     public function getAuth()
     {

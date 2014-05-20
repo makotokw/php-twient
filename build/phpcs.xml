@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
 <ruleset name="twient">
-    <description>makotokw\twient coding standard.</description>
+    <description>Makotokw\Twient coding standard.</description>
     <rule ref="PSR2"/>
 </ruleset>

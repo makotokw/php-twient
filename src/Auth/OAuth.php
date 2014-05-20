@@ -1,13 +1,13 @@
 <?php
 /**
  * Auth\OAuth class
- * This file is part of the makotokw\Twient package.
+ * This file is part of the Makotokw\Twient package.
  *
  * @author     Makoto Kawasaki <makoto.kw@gmail.com>
  * @license    The MIT License
  */
 
-namespace makotokw\Twient\Auth;
+namespace Makotokw\Twient\Auth;
 
 class OAuth implements AuthInterface
 {
@@ -99,7 +99,7 @@ class OAuth implements AuthInterface
         );
         $request->signRequest($this->signatureMethod, $this->consumer, $this->token);
 
-        $http = new \makotokw\Twient\Request\BaseRequest();
+        $http = new \Makotokw\Twient\Request\BaseRequest();
         $method = strtolower($method);
         switch ($method) {
             case 'get':

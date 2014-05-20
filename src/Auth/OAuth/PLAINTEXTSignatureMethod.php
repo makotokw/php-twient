@@ -1,6 +1,6 @@
 <?php
 
-namespace makotokw\Twient\Auth\OAuth;
+namespace Makotokw\Twient\Auth\OAuth;
 
 class PLAINTEXTSignatureMethod extends SignatureMethod
 {

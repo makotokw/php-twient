@@ -1,16 +1,16 @@
 <?php
 /**
- * Twient\Request\BaseRequest class
- * This file is part of the makotokw\Twient package.
+ * Request\BaseRequest class
+ * This file is part of the Makotokw\Twient package.
  *
  * @author     Makoto Kawasaki <makoto.kw@gmail.com>
  * @license    The MIT License
  */
 
-namespace makotokw\Twient\Request;
+namespace Makotokw\Twient\Request;
 
-use makotokw\Twient\Twitter;
-use makotokw\Twient\Exception as TwientException;
+use Makotokw\Twient\Twitter;
+use Makotokw\Twient\Exception as TwientException;
 
 class BaseRequest
 {
@@ -101,7 +101,7 @@ class BaseRequest
     /**
      * @param $url
      * @param array $params
-     * @param \makotokw\Twient\Auth\AuthInterface $auth
+     * @param \Makotokw\Twient\Auth\AuthInterface $auth
      * @return string
      */
     public function get($url, array $params = array(), $auth = null)
@@ -126,7 +126,7 @@ class BaseRequest
     /**
      * @param $url
      * @param array $params
-     * @param \makotokw\Twient\Auth\AuthInterface $auth
+     * @param \Makotokw\Twient\Auth\AuthInterface $auth
      * @return string
      */
     public function post($url, array $params = array(), $auth = null)
@@ -153,7 +153,7 @@ class BaseRequest
      * @param array $headers
      * @param null $postData
      * @return string
-     * @throws \makotokw\Twient\Exception
+     * @throws \Makotokw\Twient\Exception
      */
     protected function doRequest($url, $method, $headers = array(), $postData = null)
     {
@@ -208,7 +208,7 @@ class BaseRequest
     /**
      * @param $url
      * @param array $params
-     * @param \makotokw\Twient\Auth\AuthInterface $auth
+     * @param \Makotokw\Twient\Auth\AuthInterface $auth
      * @param null $callback
      * @return mixed
      */
@@ -220,7 +220,7 @@ class BaseRequest
     /**
      * @param $url
      * @param array $params
-     * @param \makotokw\Twient\Auth\AuthInterface $auth
+     * @param \Makotokw\Twient\Auth\AuthInterface $auth
      * @param null $callback
      * @return mixed
      */

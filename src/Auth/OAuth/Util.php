@@ -1,13 +1,13 @@
 <?php
 
-namespace makotokw\Twient\Auth\OAuth;
+namespace Makotokw\Twient\Auth\OAuth;
 
 class Util
 {
     public static function urlencodeRfc3986($input)
     {
         if (is_array($input)) {
-            return array_map(array('\makotokw\Twient\Auth\OAuth\Util', 'urlencodeRfc3986'), $input);
+            return array_map(array('\Makotokw\Twient\Auth\OAuth\Util', 'urlencodeRfc3986'), $input);
         } else {
             if (is_scalar($input)) {
                 return str_replace(

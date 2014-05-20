@@ -1,8 +1,8 @@
 <?php
 
-namespace makotokw\Twient\Auth\OAuth;
+namespace Makotokw\Twient\Auth\OAuth;
 
-use makotokw\Twient\Exception;
+use Makotokw\Twient\Exception;
 
 class Server
 {
@@ -96,7 +96,7 @@ class Server
      * version 1
      * @param Request $request
      * @return float
-     * @throws \Twient\Exception
+     * @throws \Makotokw\Twient\Exception
      */
     private function getVersion($request)
     {
@@ -114,7 +114,7 @@ class Server
      * figure out the signature with some defaults
      * @param Request $request
      * @return SignatureMethod
-     * @throws \Twient\Exception
+     * @throws \Makotokw\Twient\Exception
      */
     private function getSignatureMethod(&$request)
     {
@@ -140,7 +140,7 @@ class Server
      * try to find the consumer for the provided request's consumer key
      * @param Request $request
      * @return mixed
-     * @throws \Twient\Exception
+     * @throws \Makotokw\Twient\Exception
      */
     private function getConsumer($request)
     {
@@ -163,7 +163,7 @@ class Server
      * @param $consumer
      * @param string $token_type
      * @return mixed
-     * @throws \Twient\Exception
+     * @throws \Makotokw\Twient\Exception
      */
     private function getToken($request, $consumer, $token_type = "access")
     {
@@ -185,7 +185,7 @@ class Server
      * @param Request $request
      * @param $consumer
      * @param $token
-     * @throws \Twient\Exception
+     * @throws \Makotokw\Twient\Exception
      */
     private function checkSignature($request, $consumer, $token)
     {
@@ -214,7 +214,7 @@ class Server
     /**
      * check that the timestamp is new enough
      * @param $timestamp
-     * @throws \Twient\Exception
+     * @throws \Makotokw\Twient\Exception
      */
     private function checkTimestamp($timestamp)
     {
@@ -233,7 +233,7 @@ class Server
      * @param $token
      * @param $nonce
      * @param $timestamp
-     * @throws \Twient\Exception
+     * @throws \Makotokw\Twient\Exception
      */
     private function checkNonce($consumer, $token, $nonce, $timestamp)
     {

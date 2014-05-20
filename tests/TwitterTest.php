@@ -1,6 +1,6 @@
 <?php
 
-namespace makotokw\Twient;
+namespace Makotokw\Twient;
 
 // php-twient Application
 define('APP_CONSUMER_KEY', 'Y8rq4tcFLhqVEUKV4FvZA');
@@ -12,7 +12,7 @@ define('USER_SECRET', 'fafYoa7AKVrSMZ09YXPjzgOw7Q4gIo9A6QN08rll8uI');
 class TwitterTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var makotokw\Twient\Twitter
+     * @var \Makotokw\Twient\Twitter
      */
     public $twitter;
     public $requestClasses;
@@ -28,9 +28,9 @@ class TwitterTest extends \PHPUnit_Framework_TestCase
             USER_SECRET
         );
         $this->twitter = $twitter;
-        $this->requestClasses = array('\makotokw\Twient\Request\BaseRequest');
+        $this->requestClasses = array('\Makotokw\Twient\Request\BaseRequest');
         if (function_exists('curl_init')) {
-            $this->requestClasses[] = '\makotokw\Twient\Request\CurlRequest';
+            $this->requestClasses[] = '\Makotokw\Twient\Request\CurlRequest';
         }
     }
 

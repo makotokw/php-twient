@@ -1,15 +1,15 @@
 <?php
 /**
- * Twient\Request\CurlRequest class
- * This file is part of the makotokw\Twient package.
+ * Request\CurlRequest class
+ * This file is part of the Makotokw\Twient package.
  *
  * @author     Makoto Kawasaki <makoto.kw@gmail.com>
  * @license    The MIT License
  */
 
-namespace makotokw\Twient\Request;
+namespace Makotokw\Twient\Request;
 
-use makotokw\Twient\Exception as TwientException;
+use Makotokw\Twient\Exception as TwientException;
 
 class CurlRequest extends BaseRequest
 {

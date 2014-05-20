@@ -33,7 +33,7 @@ Get timeline
 ----------------------------------------------------
 
     <?php
-    use makotokw\Twient\Twitter;
+    use Makotokw\Twient\Twitter;
 
     $consumer_key = 'consumer key for your application';
     $consumer_secret = 'consumer secret for your application';
@@ -74,7 +74,7 @@ The streaming method is terminated when callback returns false.
 Alternative API
 ----------------------------------------------------
 
-    use makotokw\Twient\Twitter\V1dot1 as Twitter;
+    use Makotokw\Twient\Twitter\V1dot1 as Twitter;
 
     $twitter = new Twitter();
     ...
@@ -90,7 +90,7 @@ HISTORY
 v0.6
 ----------------
 
- * Added vendor namespace ``makotokw\Twient``
+ * Added vendor namespace ``Makotokw\Twient``
  * PSR-4 Auto Loading
 
 v0.5.1

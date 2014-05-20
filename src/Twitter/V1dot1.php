@@ -1,15 +1,15 @@
 <?php
 /**
  * Twitter\V1dot1 class
- * This file is part of the makotokw\Twient package.
+ * This file is part of the Makotokw\Twient package.
  *
  * @author     Makoto Kawasaki <makoto.kw@gmail.com>
  * @license    The MIT License
  */
 
-namespace makotokw\Twient\Twitter;
+namespace Makotokw\Twient\Twitter;
 
-use \makotokw\Twient\Twitter as Client;
+use \Makotokw\Twient\Twitter as Client;
 
 class V1dot1 extends Client
 {
