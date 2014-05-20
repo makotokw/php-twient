@@ -91,7 +91,9 @@ v0.6
 ----------------
 
  * Added vendor namespace ``Makotokw\Twient``
+ * No longer supported TinyURL
  * PSR-4 Auto Loading
+
 
 v0.5.1
 ----------------
