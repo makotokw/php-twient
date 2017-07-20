@@ -4,23 +4,24 @@
  * This file is part of the Makotokw\Twient package.
  *
  * @author      Makoto Kawasaki <makoto.kw@gmail.com>
- * @version     0.6
+ * @version     0.7
  * @license     The MIT License
  * @link        http://github.com/makotokw/php-twient
  */
-
 namespace Makotokw\Twient;
 
+use Makotokw\Twient\Auth\BasicAuth;
 use Makotokw\Twient\Request\StreamingRequest;
 use Makotokw\Twient\Auth\OAuth;
 
 class Twitter
 {
     const NAME = 'php-twient';
-    const VERSION = '0.6';
-    const URL = 'http://twitter.com';
+    const VERSION = '0.7';
+    const URL = 'https://twitter.com';
 
     const REST_API_URL = 'https://api.twitter.com/1.1';
+    const UPLOAD_API_URL = 'https://upload.twitter.com/1.1';
     const STREAM_URL = 'https://stream.twitter.com/1.1';
     const USER_STREAM_URL = 'https://userstream.twitter.com/1.1';
     const SITE_STREAM_URL = 'https://sitestream.twitter.com/1.1';
@@ -43,9 +44,19 @@ class Twitter
     protected $defaultApiOptions;
 
     /**
-     * @var array
+     * @var string[]
      */
     protected $postMethodNames;
+
+    /**
+     * @var string[]
+     */
+    protected $deleteMethodNames;
+
+    /**
+     * @var string[]
+     */
+    protected $uploadMethodNames;
 
     /**
      * Construct
@@ -65,40 +76,60 @@ class Twitter
         );
 
         $this->postMethodNames = array(
-            'statuses/destroy/:id',
-            'statuses/update',
-            'statuses/retweet/:id',
-            'statuses/update_with_media',
-            'direct_messages/destroy',
-            'direct_messages/new',
-            'friendships/create',
-            'friendships/destroy',
-            'friendships/update',
+            'account/remove_profile_banner',
             'account/settings',
-            'account/update_delivery_device',
             'account/update_profile',
             'account/update_profile_background_image',
             'account/update_profile_colors',
             'account/update_profile_image',
             'blocks/create',
             'blocks/destroy',
-            'account/remove_profile_banner',
-            'account/update_profile_banner',
-            'favorites/destroy',
+            'collections/create',
+            'collections/destroy',
+            'collections/entries/add',
+            'collections/entries/curate',
+            'collections/entries/move',
+            'collections/entries/remove',
+            'collections/update',
+            'direct_messages/destroy',
+            'direct_messages/events/new',
+            'direct_messages/new',
+            'direct_messages/welcome_messages/new',
+            'direct_messages/welcome_messages/rules/new',
             'favorites/create',
+            'favorites/destroy',
+            'friendships/create',
+            'friendships/destroy',
+            'friendships/update',
+            'geo/place',
+            'lists/create',
+            'lists/destroy',
+            'lists/members/create',
+            'lists/members/create_all',
             'lists/members/destroy',
+            'lists/members/destroy_all',
             'lists/subscribers/create',
             'lists/subscribers/destroy',
-            'lists/members/create_all',
-            'lists/members/create',
-            'lists/destroy',
             'lists/update',
-            'lists/create',
-            'lists/members/destroy_all',
+            'mutes/users/create',
+            'mutes/users/destroy',
             'saved_searches/create',
             'saved_searches/destroy/:id',
-            'geo/place',
+            'statuses/destroy/:id',
+            'statuses/retweet/:id',
+            'statuses/unretweet/:id',
+            'statuses/update',
+            'statuses/update_with_media', // (deprecated)
             'users/report_spam',
+        );
+
+        $this->deleteMethodNames = array(
+            'direct_messages/welcome_messages/destroy',
+            'direct_messages/welcome_messages/rules/destroy',
+        );
+
+        $this->uploadMethodNames = array(
+            'media/upload',
         );
 
         $this->streamingApis = array(
@@ -151,7 +182,7 @@ class Twitter
      */
     public function basicAuth($username, $password)
     {
-        $this->auth = new \Makotokw\Twient\Auth\BasicAuth($username, $password);
+        $this->auth = new BasicAuth($username, $password);
         return $this->auth;
     }
 
@@ -199,6 +230,9 @@ class Twitter
             for ($i = 1; $i < count($matches); $i++) {
                 $options['$'.$i] = $matches[$i][0];
             }
+        }
+        if (in_array($methodName, $this->uploadMethodNames)) {
+            $options['url'] = self::UPLOAD_API_URL;
         }
         return $options;
     }
