@@ -86,6 +86,10 @@ Alternative API
 HISTORY
 ============
 
+v0.7
+----------------
+
+ * Supported media/upload api
 
 v0.6
 ----------------
